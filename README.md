@@ -1,3 +1,5 @@
+![](https://gitlab.com/uploads/-/system/project/avatar/11976919/logs.png?width=1000)
+
 # qLogger
 > Ever thought the native console logging feature could be better?
 
