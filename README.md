@@ -1,8 +1,6 @@
 # qLogger
 > Ever thought the native console logging feature could be better?
 
-[![NPM Version][npm-image]][npm-url]
-
 This npm module makes it slightly easier but mainly a lot nicer when you're logging to console.
 
 
