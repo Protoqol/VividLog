@@ -1,5 +1,5 @@
-![](https://gitlab.com/uploads/-/system/project/avatar/11976919/logs.png?width=1000)
-
+<img src="https://gitlab.com/uploads/-/system/project/avatar/11976919/logs.png?width=1000"
+     alt="qLoggern" width="200" height="200"/>
 # qLogger
 > Ever thought the native console logging feature could be better?
 
