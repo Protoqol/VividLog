@@ -1,0 +1,32 @@
+{
+  "name": "qlogger",
+  "version": "1.0.0",
+  "description": "A more useful and better looking console log for JavaScript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/QuintenJustus/qlogger.git"
+  },
+  "keywords": [
+    "logging",
+    "debug",
+    "javascript",
+    "ecmascript",
+    "log",
+    "quinten",
+    "justus",
+    "quintenjustus",
+    "debugging",
+    "fancy",
+    "log"
+  ],
+  "author": "QuintenJustus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://gitlab.com/QuintenJustus/qlogger/issues"
+  },
+  "homepage": "https://gitlab.com/QuintenJustus/qlogger#readme"
+}
