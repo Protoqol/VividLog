@@ -14,3 +14,5 @@ This npm module makes it slightly easier but mainly a lot nicer when you're logg
 Distributed under the MIT license. See ``LICENSE`` for more information.
 
 [https://gitlab.com/QuintenJustus](https://gitlab.com/QuintenJustus)
+
+[Icon](https://www.freepik.com/)
