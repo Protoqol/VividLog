@@ -1,14 +1,14 @@
 {
-  "name": "qlogger",
-  "version": "1.0.0",
+  "name": "vividlog",
+  "version": "0.0.31",
   "description": "A more useful and better looking console log for JavaScript",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/QuintenJustus/qlogger.git"
+    "url": "git+https://gitlab.com/QuintenJustus/vividlog.git"
   },
   "keywords": [
     "logging",
@@ -26,7 +26,7 @@
   "author": "QuintenJustus",
   "license": "MIT",
   "bugs": {
-    "url": "https://gitlab.com/QuintenJustus/qlogger/issues"
+    "url": "https://gitlab.com/QuintenJustus/vividlog/issues"
   },
-  "homepage": "https://gitlab.com/QuintenJustus/qlogger#readme"
+  "homepage": "https://gitlab.com/QuintenJustus/vividlog#readme"
 }
