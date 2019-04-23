@@ -8,7 +8,7 @@ This npm module makes it slightly easier but mainly a lot nicer when you're logg
 
 ## Release History
 
-* 1.0.0
+* 0.0.2
     * Work in progress
 
 ## Meta
