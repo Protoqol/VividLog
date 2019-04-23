@@ -12,18 +12,18 @@ Installation is as simple as any other npm module.<br>
 
 #### Install with CDN
 Add to your meta tags <br>
-`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.12/dist/main.js"></script>`
+`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.3/dist/main.js"></script>`
 
 #### Usage
-VividLog is bound to `window.v` and looks something like this.<br>
+VividLog is bound to `window.v` & `global.v` and looks something like this.<br><br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/withconsole.png"
      alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
 ##### Available log types
 > All methods currently only support one variable per call. Multiple vars support coming soon.
 ```javascript
-// Set 
-const v = window.v;
+// Set v to VividLog
+const v = window.vividLog;
 
 // Every method supports any type of variable
 
@@ -61,6 +61,9 @@ Use as `v.config.iUseLightTheme = true;`
 ```
 
 ## Release History (v1.0.0)
+* 1.0.3
+    * v is now bound to window.vividLog & global.vividLog instead of *.v
+    * Readme updates
 * 1.0.0
     * The first release, it's now working and can be used.
 * 0.9.0

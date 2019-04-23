@@ -1,6 +1,6 @@
 {
   "name": "vividlog",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A more useful and better looking console log for JavaScript",
   "main": "dist/main.js",
   "scripts": {
