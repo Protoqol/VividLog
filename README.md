@@ -9,6 +9,7 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the co
 #### Install with npm
 Installation is as simple as any other npm module.<br>
 `npm i vividlog --save-dev`<br>
+
 #### Install with CDN
 Add to your meta tags <br>
 `<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.12/dist/main.js"></script>`
