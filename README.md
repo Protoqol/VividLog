@@ -6,7 +6,6 @@
 This npm module makes it slightly easier but mainly a lot nicer to log to the console.
 
 ## Installation & Usage
-> You can install the package, but it won't do anything as of yet 🤡
 ####Install with npm
 Installation is as simple as any other npm module.<br>
 `npm i vividlog --save-dev`<br>
@@ -20,7 +19,7 @@ VividLog is bound to `window.v` and looks something like this.<br>
      alt="Vivid Log" width="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
 ##### Available log types
-```
+```javascript
 // Debug message
 v.debug('Message');
 
