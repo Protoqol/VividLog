@@ -22,6 +22,9 @@ VividLog is bound to `window.v` and looks something like this.<br>
 ##### Available log types
 > All methods currently only support one variable per call. Multiple vars support coming soon.
 ```javascript
+// Set 
+const v = window.v;
+
 // Every method supports any type of variable
 
 // Generic logging message
