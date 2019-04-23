@@ -11,49 +11,43 @@ Installation is as simple as any other npm module.<br>
 `npm i vividlog --save-dev`<br>
 ####Install with CDN
 Add to your meta tags <br>
-`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.0/dist/main.js"></script>`
+`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.11/dist/main.js"></script>`
 
 ####Usage
 VividLog is bound to `window.v` and looks something like this.<br>
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/c68caa4abd33adaf046379b2959ebc2a444dd42c/Assets/inaction.png"
-     alt="Vivid Log" width="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/Assets/withconsole.png"
+     alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
 ##### Available log types
+> All methods currently only support one variable per call. Multiple vars support coming soon.
 ```javascript
-// Debug message
-v.debug('Message');
-
-// Error message
-v.err(123);
-
-// Success message
-v.done({
-    This: 'is',
-    An: 'Object'   
-});
-
-// Warning message
-v.warn(functionCall);
-
-// Informational message
-v.info([
-    'Hm', 
-    'Nice', 
-    'Array'
-]);
+// Every method supports any type of variable
 
 // Generic logging message
-v.log(true);
+v.log(...);
 
-// All methods currently only support one variable per call. Multiple vars support coming soon.
+// Debug message
+v.debug(...);
+
+// Error message
+v.err(...);
+
+// Success message
+v.done(...);
+
+// Warning message
+v.warn(...);
+
+// Informational message
+v.info(...);
 ```
 ##### Custom Log
-```
+```javascript
 v.say('Label Name', 'Message', 'Color' = 'brown');
 ```
 ##### Configuration
 Use as `v.config.iUseLightTheme = true;`
-```
+```javascript
  config: {
     timeNotation: [String | 'h:m:s:ms' | Only h/m/s/ms seperated by a ':'],
     iUseLightTheme: [ Boolean | false | Makes text black instead of white ],
