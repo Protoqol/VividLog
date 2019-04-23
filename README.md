@@ -15,7 +15,7 @@ Add to your meta tags <br>
 
 #### Usage
 VividLog is bound to `window.v` and looks something like this.<br>
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/Assets/withconsole.png"
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/withconsole.png"
      alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
 ##### Available log types
