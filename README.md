@@ -11,7 +11,7 @@ Installation is as simple as any other npm module.<br>
 `npm i vividlog --save-dev`<br>
 #### Install with CDN
 Add to your meta tags <br>
-`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.11/dist/main.js"></script>`
+`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.12/dist/main.js"></script>`
 
 #### Usage
 VividLog is bound to `window.v` and looks something like this.<br>
