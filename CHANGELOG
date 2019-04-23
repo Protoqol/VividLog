@@ -1,2 +1,8 @@
+* 1.0.0
+    * The first release, it's now working and can be used.
+* 0.9.0
+    * Added the actual code; v.err() / v.debug() / v.log() / v.done() / v.warn() / v.info() / v.say()
+    * Added option to configure some settings
+    * Added semi-support for FireFox
 * 0.0.2
     * Work in progress
