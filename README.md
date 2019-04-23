@@ -6,14 +6,14 @@
 This npm module makes it slightly easier but mainly a lot nicer to log to the console.
 
 ## Installation & Usage
-####Install with npm
+#### Install with npm
 Installation is as simple as any other npm module.<br>
 `npm i vividlog --save-dev`<br>
-####Install with CDN
+### Install with CDN
 Add to your meta tags <br>
 `<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.11/dist/main.js"></script>`
 
-####Usage
+### Usage
 VividLog is bound to `window.v` and looks something like this.<br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/Assets/withconsole.png"
      alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
