@@ -12,53 +12,37 @@ Installation is as simple as any other npm module.<br>
 
 #### Install with CDN
 Add to your meta tags <br>
-`<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.0.3/dist/main.js"></script>`
+<iframe
+  src="https://carbon.now.sh/embed/?bg=rgba(171%2C184%2C195%2C100)&t=material&wt=none&l=htmlmixed&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=48px&ph=32px&ln=false&fm=Hack&fs=13px&lh=133%25&si=false&es=2x&wm=false&code=%253Cscript%2520type%253D%2522text%252Fjavascript%2522%2520src%253D%2522https%253A%252F%252Fcdn.jsdelivr.net%252Fnpm%252Fvividlog%25401.3.0%252Fdist%252Fmain.js%2522%253E%253C%252Fscript%253E"
+  style="width:600px; height:473px; border:0; margin-bottom: -250px; overflow:hidden;"
+  sandbox="allow-scripts allow-same-origin">
+</iframe>
 
 #### Usage
-VividLog is bound to `window.v` & `global.v` and looks something like this.<br><br>
+VividLog is bound to `window.v` & `global.v`<br>
+
+##### Available log types
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png">
+
+##### Configuration
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png">
+
+## Preview
+#### What you can expect
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/withconsole.png"
      alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
-##### Available log types
-> All methods currently only support one variable per call. Multiple vars support coming soon.
-```javascript
-// Set v to VividLog
-let v = window.vividLog; // or const v = window.vividLog;
+#### Without grouping and with grouping
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/groupedandwithout.png"
+     alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
-// Every method supports any type of variable
+#### Expanded group
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/grouped.png"
+     alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
-// Generic logging message
-v.log(...);
-
-// Debug message
-v.debug(...);
-
-// Error message
-v.err(...);
-
-// Success message
-v.done(...);
-
-// Warning message
-v.warn(...);
-
-// Informational message
-v.info(...);
-```
-##### Custom Log
-```javascript
-v.say('Label Name', 'Message', 'Color' = 'brown');
-```
-##### Configuration
-Use as `v.config.iUseLightTheme = true;`
-```javascript
- config: {
-    timeNotation: [String | 'h:m:s:ms' | Only h/m/s/ms seperated by a ':'],
-    iUseLightTheme: [ Boolean | false | Makes text black instead of white ],
-    fontSize: [ String | "font-size: 12px;" ],
-    newLine: [ Boolean | true | Defaults to false on FireFox],
-}
-```
+#### What your error log looks like after takeover 
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/errorcatching.png"
+     alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
 ## Release History (v1.0.0)
 * 1.3.0 
