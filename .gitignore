@@ -2,7 +2,8 @@
 .idea
 .vscode
 .babelrc
-dist/**
+TODO
+dist
 codeSamples
 test
 webpack.config.js
