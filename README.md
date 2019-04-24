@@ -1,5 +1,7 @@
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/logo.png" alt="Vivid Log"/>
 
+[![npm version](https://badge.fury.io/js/vividlog.svg)](https://badge.fury.io/js/vividlog) [![StyleCI](https://github.styleci.io/repos/183106156/shield?branch=master)](https://github.styleci.io/repos/183106156)
+
 > Ever thought the native console logging feature could be better?
 
 This npm module makes it slightly easier but mainly a lot nicer to log to the browser console.

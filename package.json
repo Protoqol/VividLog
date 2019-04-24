@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pack": "webpack",
-    "watch": "webpack --watch"
+    "watch": "webpack --watch",
+    "lint": "node_modules/.bin/goodparts lib/"
   },
   "repository": {
     "type": "git",
@@ -36,6 +37,7 @@
     "@babel/preset-env": "^7.4.3",
     "babel-loader": "^8.0.5",
     "fs": "0.0.1-security",
+    "goodparts": "^1.2.1",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "webpack-obfuscator": "^0.18.0"
