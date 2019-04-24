@@ -2,6 +2,7 @@
 .vscode
 .babelrc
 dist/**
+codeSamples
 test
 webpack.config.js
 src

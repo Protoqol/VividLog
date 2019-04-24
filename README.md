@@ -1,10 +1,8 @@
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/logo.png" alt="Vivid Log"/>
 
-# Vivid Log
-
 > Ever thought the native console logging feature could be better?
 
-This npm module makes it slightly easier but mainly a lot nicer to log to the console.
+This npm module makes it slightly easier but mainly a lot nicer to log to the browser console.
 
 ## Installation & Usage
 #### Install with npm
@@ -20,7 +18,7 @@ Or add this to your html file directly <br>
 ```
 
 #### Usage
-VividLog is bound to `window.v` & `global.v`<br>
+##### * Note that VividLog is bound to `window.v` & `global.v`.<br>
 
 ##### Available log types (Note that any type of variable is supported)
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png">
@@ -48,7 +46,7 @@ VividLog is bound to `window.v` & `global.v`<br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/errorcatching.png"
      alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
-## Release History (v1.0.0)
+## Release History (v1.3.15)
 * 1.3.0 
     * Added support to log multiple variables
     * Added ability to group variables 
