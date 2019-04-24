@@ -1,5 +1,4 @@
-<img src="https://gitlab.com/uploads/-/system/project/avatar/11976919/logs.png?width=1000"
-     alt="Vivid Log" width="200" height="200"/>
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/logo.png" alt="Vivid Log"/>
 # Vivid Log
 > Ever thought the native console logging feature could be better?
 
@@ -8,10 +7,11 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the co
 ## Installation & Usage
 #### Install with npm
 Installation is as simple as any other npm module.<br>
+`npm i vividlog --save-dev`
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/install.png" width="300">
 
 #### Install with CDN
-Add to your meta tags <br>
+Or add this to your html file directly <br>
 <iframe
   src="https://carbon.now.sh/embed/?bg=rgba(171%2C184%2C195%2C100)&t=material&wt=none&l=htmlmixed&ds=true&dsyoff=20px&dsblur=68px&wc=true&wa=true&pv=48px&ph=32px&ln=false&fm=Hack&fs=13px&lh=133%25&si=false&es=2x&wm=false&code=%253Cscript%2520type%253D%2522text%252Fjavascript%2522%2520src%253D%2522https%253A%252F%252Fcdn.jsdelivr.net%252Fnpm%252Fvividlog%25401.3.0%252Fdist%252Fmain.js%2522%253E%253C%252Fscript%253E"
   style="width:600px; height:473px; border:0; margin-bottom: -250px; overflow:hidden;"
@@ -21,7 +21,7 @@ Add to your meta tags <br>
 #### Usage
 VividLog is bound to `window.v` & `global.v`<br>
 
-##### Available log types
+##### Available log types (Note that any type of variable is supported)
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png">
 
 ##### Extra functionality
@@ -65,5 +65,3 @@ VividLog is bound to `window.v` & `global.v`<br>
 Distributed under the MIT license. See ``LICENSE`` for more information.
 
 > [gitlab.com/QuintenJustus](https://gitlab.com/QuintenJustus)
-
-> Icon by [Freepik](https://www.freepik.com/)
