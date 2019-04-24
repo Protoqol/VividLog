@@ -23,7 +23,7 @@ VividLog is bound to `window.v` & `global.v` and looks something like this.<br><
 > All methods currently only support one variable per call. Multiple vars support coming soon.
 ```javascript
 // Set v to VividLog
-const v = window.vividLog;
+let v = window.vividLog; // or const v = window.vividLog;
 
 // Every method supports any type of variable
 
@@ -61,9 +61,9 @@ Use as `v.config.iUseLightTheme = true;`
 ```
 
 ## Release History (v1.0.0)
-* 1.0.3
-    * v is now bound to window.vividLog & global.vividLog instead of *.v
-    * Readme updates
+* 1.3.0 
+    * Added support to log multiple variables
+    * Added ability to group variables 
 * 1.0.0
     * The first release, it's now working and can be used.
 * 0.9.0

@@ -1,6 +1,7 @@
 .idea
 .vscode
 .babelrc
+dist/**
 test
 webpack.config.js
 src

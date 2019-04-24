@@ -1,6 +1,6 @@
 {
   "name": "vividlog",
-  "version": "1.0.3",
+  "version": "1.2.0",
   "description": "A more useful and better looking console log for JavaScript",
   "main": "dist/main.js",
   "scripts": {
@@ -35,8 +35,9 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "babel-loader": "^8.0.5",
+    "fs": "0.0.1-security",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
-    "fs": "0.0.1-security"
+    "webpack-obfuscator": "^0.18.0"
   }
 }
