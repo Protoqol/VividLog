@@ -14,20 +14,17 @@ npm i vividlog --save-dev
 #### Install with CDN
 Or add this to your html file directly <br>
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.3.0/dist/main.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.3.15/dist/main.js"></script>
 ```
 
 #### Usage
-##### * Note that VividLog is bound to `window.v` & `global.v`.<br>
+##### Available methods
+>  Note that VividLog is bound to `window.v` & `global.v`.<br>
 
-##### Available log types (Note that any type of variable is supported)
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png">
-
-##### Extra functionality
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/extra.png" width="500">
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
 
 ##### Configuration
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png">
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" height="410">
 
 ## Preview
 #### What you can expect
@@ -47,6 +44,10 @@ Or add this to your html file directly <br>
      alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
 ## Release History (v1.3.15)
+* 1.3.15
+    * `v.takeover()` renamed to `v.takeOver()`
+    * New sample images
+    * Readme fixes and updates
 * 1.3.0 
     * Added support to log multiple variables
     * Added ability to group variables 
