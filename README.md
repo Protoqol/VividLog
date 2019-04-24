@@ -8,7 +8,7 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the co
 ## Installation & Usage
 #### Install with npm
 Installation is as simple as any other npm module.<br>
-`npm i vividlog --save-dev`<br>
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/install.png" width="300">
 
 #### Install with CDN
 Add to your meta tags <br>
@@ -23,6 +23,9 @@ VividLog is bound to `window.v` & `global.v`<br>
 
 ##### Available log types
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png">
+
+##### Extra functionality
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/extra.png">
 
 ##### Configuration
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png">
@@ -40,7 +43,7 @@ VividLog is bound to `window.v` & `global.v`<br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/grouped.png"
      alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
-#### What your error log looks like after takeover 
+#### What your error log looks like after using `v.takeover()`
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/errorcatching.png"
      alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
