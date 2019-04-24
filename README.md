@@ -1,5 +1,7 @@
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/logo.png" alt="Vivid Log"/>
+
 # Vivid Log
+
 > Ever thought the native console logging feature could be better?
 
 This npm module makes it slightly easier but mainly a lot nicer to log to the console.
@@ -7,7 +9,7 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the co
 ## Installation & Usage
 #### Install with npm
 Installation is as simple as any other npm module.<br>
-```shell
+```bash
 npm i vividlog --save-dev
 ```
 
