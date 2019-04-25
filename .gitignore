@@ -3,7 +3,7 @@
 .vscode
 .babelrc
 TODO
-dist
+test/**
 codeSamples
 test
 webpack.config.js

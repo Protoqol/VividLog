@@ -62,6 +62,9 @@ Or add this to your html file directly <br>
 * 0.0.2
     * Work in progress
 
+## Tested on Chrome / Firefox / Opera
+> If anyone could share some experiences with other browsers with me I would be very thankful!
+
 ## Meta
 
 Distributed under the MIT license. See ``LICENSE`` for more information.

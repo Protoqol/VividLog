@@ -10,6 +10,7 @@
     }
   },
   "scripts": {
+    "webpack": "webpack --watch",
     "watch": "npm-watch",
     "linter": "node_modules/.bin/goodparts lib/"
   },
