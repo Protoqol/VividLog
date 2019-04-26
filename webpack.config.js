@@ -2,7 +2,7 @@ var path                     = require('path');
 var CircularDependencyPlugin = require('circular-dependency-plugin');
 
 module.exports = {
-	mode: 'development',
+	mode: 'production',
 	entry: './lib/vividLog.js',
 	devtool: 'source-map',
 	output: {

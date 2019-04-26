@@ -19,13 +19,13 @@ Or add this to your html file directly <br>
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@latest/dist/vividLog.js"></script>
 ```
 
-#### Usage
-##### Available methods
+>#### Usage
+>##### Available methods
 >  Note that VividLog is bound to `window.vividLog`<br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
-
-##### Configuration
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" width="650">
+>
+>##### Configuration
+><img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" width="650">
 
 ## Preview - more images coming soon
 #### What you can expect
