@@ -200,23 +200,30 @@ module.exports = {
 "use strict";
 
 
-module.exports = {
-  takeOver: function takeOver(activate) {
-    window.vividLog.say('All your base are belong to us.', 'VividLog', '#3490DC');
+var v = __webpack_require__(/*! ./vividLog */ "./lib/vividLog.js");
 
+module.exports = {
+  // Redefine onerror | TODO Node version
+  takeOver: function takeOver(activate) {
     if (activate) {
       window.onerror = function (message, source, lineno, colno, error) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        event.stopPropagation();
-
         if (error) {
-          window.vividLog.err(error.stack);
+          window.vividLog.say('All your base are belong to us.', 'VividLog', '#3490DC');
+          event.preventDefault();
+          event.stopImmediatePropagation();
+          event.stopPropagation();
+          window.vividLog.err(error.stack); // Might not be available
+
+          return true; // Prevents any event bubbling
         }
 
-        return true;
+        return false; // Resume default event
       };
+
+      return true;
     }
+
+    return false;
   }
 };
 
@@ -501,7 +508,13 @@ var config = __webpack_require__(/*! ./config/config */ "./lib/config/config.js"
 var methods = __webpack_require__(/*! ./methods */ "./lib/methods.js");
 
 var LOG_ENUM = Object.freeze(__webpack_require__(/*! ./enums */ "./lib/enums.js"));
-var v = {
+var v;
+
+var takeOver = function wrapTakeOver(activate) {
+  methods.takeOver(activate);
+};
+
+module.exports = v = {
   config: config,
   takeOver: function takeOver(activate) {
     methods.takeOver(activate);
@@ -700,8 +713,6 @@ if (v.config.nav !== 'node') {
 if (v.config.nav !== 'browser') {
   global.vividLog = v;
 }
-
-module.exports = v;
 /* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
 
 /***/ }),
