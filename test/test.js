@@ -1,12 +1,12 @@
 var assert = require('assert');
-var jsdom = require('mocha-jsdom')
+var jsdom = require('mocha-jsdom'); // For use of window obj in code
 
 describe('VividLog', function () {
     jsdom({
         url: "http://localhost"
     });
 
-    describe('vividLog.takeOver()', function () {
+    describe('vividLog.methods.takeOver()', function () {
         before(function () {
             global.methods = require('../lib/methods');
         });
@@ -19,7 +19,7 @@ describe('VividLog', function () {
         })
     });
 
-    describe('util.createTime()', function () {
+    describe('vividLog.util.createTime()', function () {
         before(function () {
             global.util = require('../lib/utils');
         })
