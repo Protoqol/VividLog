@@ -28,7 +28,7 @@ Or add this to your html file directly <br>
 ##### Configuration
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" height="410">
 
-## Preview
+## Preview - more images coming soon
 #### What you can expect
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/withconsole.png"
      alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
@@ -45,7 +45,10 @@ Or add this to your html file directly <br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/errorcatching.png"
      alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
 
-## Release History (v1.3.15)
+## Release History (v1.5.0)
+* 1.5.0
+    * Added new method called `v.style()` in which you can define your own log style
+    * A lot of refactoring of the code, less chaos more nice code
 * 1.3.15
     * `v.takeover()` renamed to `v.takeOver()`
     * New sample images
