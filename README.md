@@ -1,6 +1,6 @@
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/logo.png" alt="Vivid Log"/>
 
-[![npm version](https://badge.fury.io/js/vividlog.svg)](https://badge.fury.io/js/vividlog) [![StyleCI](https://github.styleci.io/repos/183106156/shield?branch=master)](https://github.styleci.io/repos/183106156) [![Maintainability](https://api.codeclimate.com/v1/badges/11d9beceb62db9ab9ef1/maintainability)](https://codeclimate.com/github/QuintenJustus/vividlog/maintainability)
+[![npm version](https://badge.fury.io/js/vividlog.svg)](https://badge.fury.io/js/vividlog) [![CircleCI](https://circleci.com/gh/QuintenJustus/vividlog.svg?style=svg)](https://circleci.com/gh/QuintenJustus/vividlog) [![Maintainability](https://api.codeclimate.com/v1/badges/11d9beceb62db9ab9ef1/maintainability)](https://codeclimate.com/github/QuintenJustus/vividlog/maintainability)
 
 > Ever thought the native console logging feature could be better?
 
