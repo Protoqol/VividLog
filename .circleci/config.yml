@@ -28,5 +28,5 @@ jobs:
           name: Run tests
           command: |
             ./cc-test-reporter before-build
-            npm run test
+            nyc --reporter=lcov --reporter=text-lcov npm test
             ./cc-test-reporter after-build --exit-code $?

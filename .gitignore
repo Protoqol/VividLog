@@ -1,8 +1,10 @@
-push.sh
-*~
+.nyc_output
 .idea
 .vscode
 TODO
 codeSamples
 src
 node_modules
+*~
+push.sh
+coverage
