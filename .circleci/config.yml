@@ -19,7 +19,9 @@ jobs:
             chmod +x ./cc-test-reporter
       - run: 
           name: Install dependencies
-          command: npm install
+          command: |
+            npm install
+            npm install nyc 
       - save_cache:
           paths:
             - node_modules
