@@ -406,7 +406,6 @@ util.logBuilder = function (loggable, type) {
     return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (vividLog.config.newLine ? ' ' : '\n') + loggable;
   }
 
-  ;
   return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable);
 };
 
@@ -429,11 +428,31 @@ util.fire = function (loggable, style) {
   return false;
 };
 
-util.fireLabel = function (label) {
-  var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%cGroup';
+util.fireLabel = function (label, type) {
+  var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%c' + type;
   var style = util.selfStyleBuilder('purple');
   style["var"] = '';
   util.fire(compiled, style);
+};
+
+util.iterateLoggables = function (args, type) {
+  if (args.length > 1) {
+    if (vividLog.config.autoGroup) {
+      util.fireLabel(type.toUpperCase(), 'Group[' + args.length + ']');
+      console.groupCollapsed(type.toUpperCase());
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'log');
+    }
+
+    if (vividLog.config.autoGroup) {
+      console.groupEnd();
+      vividLog.config.autoGroup = false;
+    }
+  } else {
+    util.evaluate(args[0], 'log');
+  }
 };
 
 module.exports = util;
@@ -448,15 +467,20 @@ module.exports = util;
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
+ // Has to be immutable
 
+var LOG_ENUM = Object.freeze(__webpack_require__(/*! ./enums */ "./lib/enums.js"));
 
 var util = __webpack_require__(/*! ./utils */ "./lib/utils.js");
 
 var config = __webpack_require__(/*! ./config/config */ "./lib/config/config.js");
 
 var methods = __webpack_require__(/*! ./methods */ "./lib/methods.js");
+/**
+ * Create vividLog object
+ *
+ */
 
-var LOG_ENUM = Object.freeze(__webpack_require__(/*! ./enums */ "./lib/enums.js")); // Has to be immutable
 
 var vividLog = {};
 /**
@@ -508,150 +532,83 @@ vividLog.style = function (customStyle) {
 
 vividLog.fireLabel = function (label) {
   util.fireLabel(label);
-};
-
-vividLog.debug = function () {
-  var args = arguments;
-
-  if (args.length > 1) {
-    if (this.autoGroup) {
-      vividLog.fireLabel('DEBUG GROUP CREATED');
-      console.groupCollapsed('Debug (group)');
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'debug');
-    }
-
-    if (this.autoGroup) {
-      console.groupEnd();
-      this.autoGroup = false;
-    }
-  } else {
-    util.evaluate(args[0], 'debug');
-  }
-
   return this;
 };
+/**
+ * Normal priority log
+ *
+ * @returns {vividLog}
+ */
 
-vividLog.err = function () {
-  var args = arguments;
-
-  if (args.length > 1) {
-    if (this.autoGroup) {
-      vividLog.fireLabel('ERROR GROUP CREATED');
-      console.groupCollapsed('Error (group)');
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'error');
-    }
-
-    if (this.autoGroup) {
-      console.groupEnd();
-      this.autoGroup = false;
-    }
-  } else {
-    util.evaluate(args[0], 'error');
-  }
-
-  return this;
-};
-
-vividLog.warn = function () {
-  var args = arguments;
-
-  if (args.length > 1) {
-    if (this.autoGroup) {
-      vividLog.fireLabel('WARNING GROUP CREATED');
-      console.groupCollapsed('Warning (group)');
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'warning');
-    }
-
-    if (this.autoGroup) {
-      console.groupEnd();
-      this.autoGroup = false;
-    }
-  } else {
-    util.evaluate(args[0], 'error');
-  }
-
-  return this;
-};
-
-vividLog.done = function () {
-  var args = arguments;
-
-  if (args.length > 1) {
-    if (this.autoGroup) {
-      vividLog.fireLabel('SUCCESS GROUP CREATED');
-      console.groupCollapsed('Success (group)');
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'success');
-    }
-
-    if (this.autoGroup) {
-      console.groupEnd();
-    }
-  } else {
-    util.evaluate(args[0], 'success');
-  }
-
-  return this;
-};
 
 vividLog.log = function () {
-  var args = arguments;
-
-  if (args.length > 1) {
-    if (this.autoGroup) {
-      vividLog.fireLabel('LOGGING GROUP CREATED');
-      console.groupCollapsed('LOG (group)');
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'log');
-    }
-
-    if (this.autoGroup) {
-      console.groupEnd();
-      this.autoGroup = false;
-    }
-  } else {
-    util.evaluate(args[0], 'log');
-  }
-
+  util.iterateLoggables(arguments, 'log');
   return this;
 };
+/**
+ * Debug priority log
+ *
+ * @returns {vividLog}
+ */
+
+
+vividLog.debug = function () {
+  util.iterateLoggables(arguments, 'debug');
+  return this;
+};
+/**
+ * Error priority log
+ *
+ * @returns {vividLog}
+ */
+
+
+vividLog.err = function () {
+  util.iterateLoggables(arguments, 'error');
+  return this;
+};
+/**
+ * Warning priority log
+ *
+ * @returns {vividLog}
+ */
+
+
+vividLog.warn = function () {
+  util.iterateLoggables(arguments, 'warning');
+  return this;
+};
+/**
+ * Success priority log
+ *
+ * @returns {vividLog}
+ */
+
+
+vividLog.done = function () {
+  util.iterateLoggables(arguments, 'success');
+  return this;
+};
+/**
+ * Information priority log
+ *
+ * @returns {vividLog}
+ */
+
 
 vividLog.info = function () {
-  var args = arguments;
-
-  if (args.length > 1) {
-    if (this.autoGroup) {
-      vividLog.fireLabel('INFO GROUP CREATED');
-      console.groupCollapsed('Info (group)');
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'info');
-    }
-
-    if (this.autoGroup) {
-      console.groupEnd();
-      this.autoGroup = false;
-    }
-  } else {
-    util.evaluate(args[0], 'info');
-  }
-
+  util.iterateLoggables(arguments, 'info');
   return this;
 };
+/**
+ * Custom logging utility
+ *
+ * @param loggable
+ * @param label
+ * @param color
+ * @returns {boolean}
+ */
+
 
 vividLog.say = function (loggable, label, color) {
   if (util.checkTypeLog(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
@@ -666,8 +623,7 @@ vividLog.say = function (loggable, label, color) {
   }
 };
 
-window.vividLog = vividLog;
-module.exports = vividLog;
+module.exports = window.vividLog = vividLog;
 
 /***/ }),
 

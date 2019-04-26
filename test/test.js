@@ -1,7 +1,7 @@
 var assert = require('assert');
 var jsdom  = require('mocha-jsdom'); // For use of window obj in code
 
-describe('VividLog', function () {
+describe('Vivid Log | Testing Suite', function () {
 	jsdom({
 		url: 'http://localhost'
 	});
