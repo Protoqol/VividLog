@@ -22,7 +22,6 @@ Or add this to your html file directly <br>
 #### Usage
 ##### Available methods
 >  Note that VividLog is bound to `window.vividLog`<br>
-
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
 
 ##### Configuration
