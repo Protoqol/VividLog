@@ -349,41 +349,53 @@ function () {
     key: "createTime",
     // Generate timestamp based on config
     value: function createTime(format) {
-      var date = new Date();
-      var h = (date.getHours() < 10 ? '0' : '') + date.getHours();
-      var m = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
-      var s = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
-      var ms = (date.getMilliseconds() < 10 ? '0' : '') + date.getMilliseconds();
-      var notation = format.split(':');
+      var d = this.timeObj(format),
+          str = '';
 
-      for (var i = 0; i < notation.length; i++) {
-        switch (notation[i]) {
+      for (var i = 0; i < d.format.length; i++) {
+        switch (d.format[i]) {
           case 'h':
-            format += h;
+            str += d.h;
             break;
 
           case 'm':
-            format += m;
+            str += d.m;
             break;
 
           case 's':
-            format += s;
+            str += d.s;
             break;
 
           case 'ms':
-            format += ms;
+            str += d.ms;
             break;
 
           default:
             break;
         }
 
-        if (i !== notation.length - 1) {
-          format += ':';
+        if (i !== d.format.length - 1) {
+          str += ':';
         }
       }
 
-      return format;
+      if (typeof str === 'string' && str.length >= 1) {
+        return str;
+      }
+
+      return false;
+    }
+  }, {
+    key: "timeObj",
+    value: function timeObj(format) {
+      var date = new Date();
+      return {
+        format: format.split(':') || window.vividLog.config.timeNotation.split(':'),
+        h: (date.getHours() < 10 ? '0' : '') + date.getHours(),
+        m: (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(),
+        s: (date.getSeconds() < 10 ? '0' : '') + date.getSeconds(),
+        ms: (date.getMilliseconds() < 10 ? '0' : '') + date.getMilliseconds()
+      };
     }
   }, {
     key: "checkType",

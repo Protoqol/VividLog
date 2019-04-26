@@ -8,14 +8,25 @@ describe('VividLog', function () {
 
     describe('vividLog.takeOver()', function () {
         before(function () {
-            global.v = require('../lib/methods');
+            global.methods = require('../lib/methods');
         });
 
         it('should return true when native error log has been taken over', function () {
-            assert.strictEqual(v.takeOver(true), true);
+            assert.strictEqual(methods.takeOver(true), true);
         });
         it('should return false when not explicitly stating true', function () {
-            assert.strictEqual(v.takeOver(), false);
+            assert.strictEqual(methods.takeOver(), false);
         })
+    });
+
+    describe('util.createTime()', function () {
+        before(function () {
+            global.util = require('../lib/utils');
+        })
+
+        it('should return a timestamp (string)', function () {
+            assert.ok(util.createTime('h:m:s'));
+            assert.strictEqual(typeof util.createTime('h:m:s'), 'string');
+        });
     });
 });
