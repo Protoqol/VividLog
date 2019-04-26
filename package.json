@@ -5,11 +5,14 @@
   "main": "dist/vividLog.js",
   "watch": {
     "linter": {
-      "patterns": ["lib"],
+      "patterns": [
+        "lib"
+      ],
       "extensions": "js"
     }
   },
   "scripts": {
+    "test": "./node_modules/mocha/bin/mocha",
     "webpack": "webpack --watch",
     "watch": "npm-watch",
     "linter": "node_modules/.bin/goodparts lib/"
@@ -43,6 +46,7 @@
     "babel-loader": "^8.0.5",
     "fs": "0.0.1-security",
     "goodparts": "^1.2.1",
+    "mocha": "^6.1.4",
     "npm-watch": "^0.6.0",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
