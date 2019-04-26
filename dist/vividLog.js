@@ -267,7 +267,7 @@ function () {
   }, {
     key: "customSmallLoggable",
     value: function customSmallLoggable(loggable, label, color) {
-      util.fire(util.selfLogBuilder(loggable, label), util.selfStyleBuilder(color));
+      return util.fire(util.selfLogBuilder(loggable, label), util.selfStyleBuilder(color));
     }
   }, {
     key: "customBigLoggable",
@@ -311,46 +311,45 @@ function () {
     key: "typeHint",
     // Return type and length of loggable
     value: function typeHint(loggable) {
-      var len = loggable.length || 0;
-
       switch (_typeof(loggable)) {
-        case "string":
+        case 'string':
+          var len = loggable.length || 0;
           return 'string[' + len + ']';
 
-        case "boolean":
+        case 'boolean':
           return 'boolean';
 
-        case "number":
-          len = (loggable + '').length;
+        case 'number':
+          var len = (loggable + '').length;
           return 'integer[' + len + ']';
 
-        case "object":
-          len = Object.keys(loggable).length;
+        case 'object':
+          var len = Object.keys(loggable).length;
           return 'object[' + len + ']';
 
-        case "bigint":
-          len = (loggable + '').length;
+        case 'bigint':
+          var len = (loggable + '').length;
           return 'big integer[' + len + ']';
 
-        case "function":
+        case 'function':
           return 'function';
 
-        case "symbol":
+        case 'symbol':
           return 'symbol';
 
-        case "undefined":
+        case 'undefined':
           return 'undefined';
 
         default:
-          return 'unknown';
+          return false;
       }
     }
   }, {
     key: "createTime",
     // Generate timestamp based on config
     value: function createTime(format) {
-      var d = this.timeObj(format),
-          str = '';
+      var d = this.timeObj(format);
+      var str = '';
 
       for (var i = 0; i < d.format.length; i++) {
         switch (d.format[i]) {
@@ -485,14 +484,20 @@ function () {
   }, {
     key: "fire",
     value: function fire(loggable, style) {
-      this.resetConfs();
-      console.log(loggable, style.status, style.time, style.type, style["var"]);
+      if (this.resetConfs()) {
+        console.log(loggable, style.status, style.time, style.type, style["var"]);
+        return true;
+      }
+
+      return false;
     }
   }, {
     key: "resetConfs",
     value: function resetConfs(properties) {
       // Todo Expand
       window.vividLog.config.customStyle = '';
+      if (window.vividLog.config.customStyle === '') return true;
+      return false;
     }
   }]);
 
@@ -676,8 +681,7 @@ module.exports = v = {
 
     return this;
   },
-  say: function say() {
-    var loggable = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'My Variable';
+  say: function say(loggable) {
     var label = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.title;
     var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'brown';
 
@@ -692,19 +696,10 @@ module.exports = v = {
 };
 var logTypes = {
   headLine: function headLine(label) {
-    var lightTheme = '';
-    var newLine = ' ';
-    var params = v.config.timeStyle + 'background: blueviolet;';
-
-    if (v.config.iUseLightTheme) {
-      lightTheme = 'color: black;';
-    }
-
-    if (!v.config.newLine) {
-      newLine = '\n';
-    }
-
-    console.log('%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%cGroup', v.config.statusStyle + params + v.config.fontSize, params + v.config.fontSize, params + 'background: purple;' + v.config.fontSize);
+    var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%cGroup';
+    var style = util.selfStyleBuilder('purple');
+    style["var"] = '';
+    util.fire(compiled, style);
   }
 };
 

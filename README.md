@@ -21,7 +21,7 @@ Or add this to your html file directly <br>
 
 #### Usage
 ##### Available methods
->  Note that VividLog is bound to `window.v` & `global.v`.<br>
+>  Note that VividLog is bound to `window.v` or `global.v` depending on your environment.<br>
 
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
 
