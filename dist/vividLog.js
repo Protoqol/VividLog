@@ -212,7 +212,7 @@ module.exports = {
       return true;
     }
 
-    v.style('font-style: italic;').say('f v.takeOver() was called but was not turned on. Do so by using v.takeOver(true)', 'VividLog', '#E3342F');
+    vividLog.style('font-style: italic;').say('f v.takeOver() was called but was not turned on. Do so by using v.takeOver(true)', 'VividLog', '#E3342F');
     return false;
   }
 };
@@ -697,6 +697,7 @@ vividLog.say = function (loggable, label, color) {
     console.log(util.logBuilder('nullObjectType', type), style.status, style.time, style.type);
     console.log(loggable);
     console.log('%c                         ', 'padding: 0 5px;font-weight: bolder; border-top: 2px solid ' + window.vividLog.config.status[type].lightColor + ';');
+    return true;
   }
 };
 
