@@ -16,17 +16,17 @@ npm i vividlog --save-dev
 #### Install with CDN
 Or add this to your html file directly <br>
 ```html
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@1.3.15/dist/main.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@latest/dist/vividLog.js"></script>
 ```
 
 #### Usage
 ##### Available methods
->  Note that VividLog is bound to `window.v` or `global.v` depending on your environment.<br>
+>  Note that VividLog is bound to `window.vividLog`<br>
 
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
 
 ##### Configuration
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" height="410">
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" height="650">
 
 ## Preview - more images coming soon
 #### What you can expect
