@@ -30,5 +30,5 @@ jobs:
           name: Run tests
           command: |
             ./cc-test-reporter before-build
-            ./node_modules/nyc/bin/nyc.js --reporter=lcov --reporter=text-lcov npm test
+            ./node_modules/nyc/bin/nyc.js --reporter=lcov --reporter=text-lcov npm run circle
             ./cc-test-reporter after-build --exit-code $?
