@@ -7,7 +7,7 @@
     "test": "{lib,test}/*.js"
   },
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha",
+    "test": "nyc mocha",
     "webpack": "webpack --watch",
     "watch": "npm-watch",
     "linter": "node_modules/.bin/goodparts lib/"
@@ -45,6 +45,7 @@
     "mocha": "^6.1.4",
     "mocha-jsdom": "^2.0.0",
     "npm-watch": "^0.6.0",
+    "nyc": "^14.0.0",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
     "webpack-obfuscator": "^0.18.0"
