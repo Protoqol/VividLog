@@ -237,6 +237,13 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 var LOG_ENUM = __webpack_require__(/*! ./enums */ "./lib/enums.js");
 
 var util = {};
+/**
+ * Evaluate incoming loggable and type
+ *
+ * @param loggable
+ * @param type
+ * @returns {boolean}
+ */
 
 util.evaluate = function (loggable, type) {
   if (util.checkTypeLog(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
@@ -252,9 +259,15 @@ util.evaluate = function (loggable, type) {
 
   return false;
 };
+/**
+ * Find type and length of loggable
+ *
+ * @param loggable
+ * @returns {string|boolean}
+ */
+
 
 util.getType = function (loggable) {
-  // Return type and length of loggable
   var len;
 
   switch (_typeof(loggable)) {
@@ -290,9 +303,15 @@ util.getType = function (loggable) {
       return false;
   }
 };
+/**
+ * Compile a timestamp based on the config
+ *
+ * @param format
+ * @returns {string|boolean}
+ */
+
 
 util.createTime = function (format) {
-  // Generate timestamp based on config
   var time = util.timeObj(format);
   var returnTime = '';
 
@@ -329,6 +348,13 @@ util.createTime = function (format) {
 
   return false;
 };
+/**
+ * Return current datetime and config time notation
+ *
+ * @param format
+ * @returns {{s: string, ms: string, format: (void|string[]), h: string, m: string}}
+ */
+
 
 util.timeObj = function (format) {
   var date = new Date();
@@ -340,19 +366,38 @@ util.timeObj = function (format) {
     ms: (date.getMilliseconds() < 10 ? '0' : '') + date.getMilliseconds()
   };
 };
+/**
+ * Check if loggable is a big or small loggable
+ *
+ * @param loggable
+ * @returns {number}
+ */
+
 
 util.checkTypeLog = function (loggable) {
-  // Check if big or small loggable
   return typeof loggable === 'string' || typeof loggable === 'number' || typeof loggable === 'undefined' ? LOG_ENUM.SMALL_LOGGABLE : LOG_ENUM.BIG_LOGGABLE;
 };
+/**
+ * TODO | Will return verified and fixed css from user input
+ *
+ * @param css
+ * @returns {*}
+ */
+
 
 util.makeStyleCompatible = function (css) {
   // Check (and fix) user written css | Todo
   return css;
 };
+/**
+ * Compile default CSS rules for log
+ *
+ * @param type
+ * @returns {{var: *, time: string, type: *, status: string}}
+ */
+
 
 util.styleBuilder = function (type) {
-  // Build CSS rules
   var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
   var customStyle = window.vividLog.config.customStyle;
   var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
@@ -372,6 +417,13 @@ util.styleBuilder = function (type) {
     "var": style["default"] + style.varDefault + style.custom
   };
 };
+/**
+ * Compile default CSS rules with custom color for log
+ *
+ * @param color
+ * @returns {{var: *, time: string, type: *, status: string}}
+ */
+
 
 util.selfStyleBuilder = function (color) {
   // Build style rules for vividLog.say() function
@@ -388,36 +440,63 @@ util.selfStyleBuilder = function (color) {
     custom: util.makeStyleCompatible(customStyle)
   };
   return {
-    status: style["default"].concat([style.labelDefault, style.logNameDefault]),
-    time: style["default"].concat([style.labelDefault, style.timeDefault]),
-    type: style["default"].concat([style.labelDefault + style.typeNameDefault]),
-    "var": style["default"].concat([style.varDefault]) + style.custom
+    status: style["default"] + style.labelDefault + style.logNameDefault,
+    time: style["default"] + style.labelDefault + style.timeDefault,
+    type: style["default"] + style.labelDefault + style.typeNameDefault,
+    "var": style["default"] + style.varDefault + style.custom
   };
 };
+/**
+ * Compile loggable
+ *
+ * @param loggable
+ * @param type
+ * @returns {string}
+ */
+
 
 util.logBuilder = function (loggable, type) {
-  // Build log message
-  // Status | Name of label
-  // Timestamp
-  // Type[length]
-  // [newLine?] + loggable
-  // Check if not big | Todo better check
+  // Check if not big
   if (loggable !== 'nullObjectType') {
     return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (vividLog.config.newLine ? ' ' : '\n') + loggable;
   }
 
   return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable);
 };
+/**
+ * Compile loggable with custom label
+ *
+ * @param loggable
+ * @param label
+ * @returns {string}
+ */
+
 
 util.selfLogBuilder = function (loggable, label) {
   // Build style rules for custom vividLog.say() function
   return '%c' + label + '%c' + util.createTime(window.vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (window.vividLog.config.newLine ? ' ' : '\n') + loggable;
 };
+/**
+ * Reset chained function config changes
+ *
+ * @returns {boolean}
+ */
+
 
 util.resetConfs = function () {
   // Todo Expand
-  return window.vividLog.config.customStyle === '';
+  window.vividLog.config.customStyle = '';
+  window.vividLog.config.autoGroup = false;
+  return window.vividLog.config.customStyle === '' && window.vividLog.config.autoGroup === false;
 };
+/**
+ * Do the actual log to console
+ *
+ * @param loggable
+ * @param style
+ * @returns {boolean}
+ */
+
 
 util.fire = function (loggable, style) {
   if (util.resetConfs()) {
@@ -427,6 +506,13 @@ util.fire = function (loggable, style) {
 
   return false;
 };
+/**
+ * Only log a label
+ *
+ * @param label
+ * @param type
+ */
+
 
 util.fireLabel = function (label, type) {
   var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%c' + type;
@@ -434,25 +520,46 @@ util.fireLabel = function (label, type) {
   style["var"] = '';
   util.fire(compiled, style);
 };
+/**
+ * Iterate over all given arguments, or not depending on number of arguments
+ *
+ * @param args
+ * @param type
+ */
+
+
+util.loggable = function (args, type) {
+  if (args.length > 1) {
+    return util.iterateLoggables(args, type);
+  }
+
+  return util.evaluate(args[0], type);
+};
+/**
+ * If multiple loggables are given, they will be iterated through here
+ *
+ * @param args
+ * @param type
+ * @returns {boolean}
+ */
+
 
 util.iterateLoggables = function (args, type) {
-  if (args.length > 1) {
-    if (vividLog.config.autoGroup) {
-      util.fireLabel(type.toUpperCase(), 'Group[' + args.length + ']');
-      console.groupCollapsed(type.toUpperCase());
-    }
-
-    for (var i = 0; i < args.length; i++) {
-      util.evaluate(args[i], 'log');
-    }
-
-    if (vividLog.config.autoGroup) {
-      console.groupEnd();
-      vividLog.config.autoGroup = false;
-    }
-  } else {
-    util.evaluate(args[0], 'log');
+  if (vividLog.config.autoGroup) {
+    util.fireLabel(type.toUpperCase(), 'Group[' + args.length + ']');
+    console.groupCollapsed(type.toUpperCase());
   }
+
+  for (var i = 0; i < args.length; i++) {
+    util.evaluate(args[i], 'log');
+  }
+
+  if (vividLog.config.autoGroup) {
+    console.groupEnd();
+    vividLog.config.autoGroup = false;
+  }
+
+  return true;
 };
 
 module.exports = util;
@@ -542,7 +649,7 @@ vividLog.fireLabel = function (label) {
 
 
 vividLog.log = function () {
-  util.iterateLoggables(arguments, 'log');
+  util.loggable(arguments, 'log');
   return this;
 };
 /**
@@ -553,7 +660,7 @@ vividLog.log = function () {
 
 
 vividLog.debug = function () {
-  util.iterateLoggables(arguments, 'debug');
+  util.loggable(arguments, 'debug');
   return this;
 };
 /**
@@ -564,7 +671,7 @@ vividLog.debug = function () {
 
 
 vividLog.err = function () {
-  util.iterateLoggables(arguments, 'error');
+  util.loggable(arguments, 'error');
   return this;
 };
 /**
@@ -575,7 +682,7 @@ vividLog.err = function () {
 
 
 vividLog.warn = function () {
-  util.iterateLoggables(arguments, 'warning');
+  util.loggable(arguments, 'warning');
   return this;
 };
 /**
@@ -586,7 +693,7 @@ vividLog.warn = function () {
 
 
 vividLog.done = function () {
-  util.iterateLoggables(arguments, 'success');
+  util.loggable(arguments, 'success');
   return this;
 };
 /**
@@ -597,7 +704,7 @@ vividLog.done = function () {
 
 
 vividLog.info = function () {
-  util.iterateLoggables(arguments, 'info');
+  util.loggable(arguments, 'info');
   return this;
 };
 /**
