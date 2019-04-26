@@ -94,7 +94,7 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
+
 
 module.exports = {
   autoGroup: false,
@@ -103,13 +103,6 @@ module.exports = {
   customStyle: '',
   fontSize: '12px',
   newLine: typeof navigator !== 'undefined' ? navigator.userAgent.includes('Firefox') : false,
-  nav: function nav() {
-    if (typeof window !== 'undefined') {
-      return 'browser';
-    } else if (process) {
-      return 'node';
-    }
-  },
   status: {
     error: {
       lightColor: '#da3030',
@@ -143,7 +136,6 @@ module.exports = {
     }
   }
 };
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../../node_modules/process/browser.js */ "./node_modules/process/browser.js")))
 
 /***/ }),
 
@@ -197,16 +189,22 @@ module.exports = {
 
 
 module.exports = {
-  // Redefine onerror | TODO Node version
+  /**
+   * Redefines on error event
+   *
+   * @param activate
+   * @returns {boolean}
+   */
   takeOver: function takeOver(activate) {
     if (activate) {
-      window.onerror = function (message, source, lineno, colno, error) {
-        if (error) {
-          // vividLog.say('All your base are belong to us.', 'VividLog', '#3490DC');
+      window.onerror = function () {
+        console.log(arguments);
+
+        if (arguments) {
           event.preventDefault();
           event.stopImmediatePropagation();
           event.stopPropagation();
-          vividLog.err(error.stack);
+          vividLog.err(arguments[4].stack);
           return true; // Prevents any event bubbling
         }
 
@@ -216,6 +214,7 @@ module.exports = {
       return true;
     }
 
+    v.style('font-style: italic;').say('f v.takeOver() was called but was not turned on. Do so by using v.takeOver(true)', 'VividLog', '#E3342F');
     return false;
   }
 };
@@ -254,7 +253,7 @@ util.evaluate = function (loggable, type) {
     var style = util.styleBuilder(type);
     console.log(util.logBuilder('nullObjectType', type), style.status, style.time, style.type);
     console.log(loggable);
-    console.log('%c                         ', 'padding: 0 5px;font-weight: bolder; border-top: 2px solid ' + window.vividLog.config.status[type].lightColor + ';');
+    console.log('%c                         ', 'padding: 0 5px;font-weight: bolder; border-top: 2px solid ' + vividLog.config.status[type].lightColor + ';');
   }
 
   return false;
@@ -302,6 +301,17 @@ util.getType = function (loggable) {
     default:
       return false;
   }
+};
+/**
+ * Check if type is any of the types of logs
+ *
+ * @param variable
+ * @returns {boolean}
+ */
+
+
+util.isTypeOfLoggable = function (variable) {
+  return variable === 'log' || variable === 'debug' || variable === 'error' || variable === 'info' || variable === 'success' || variable === 'warning';
 };
 /**
  * Compile a timestamp based on the config
@@ -390,52 +400,26 @@ util.makeStyleCompatible = function (css) {
   return css;
 };
 /**
- * Compile default CSS rules for log
+ * Compile CSS rules for log into object
  *
  * @param type
- * @returns {{var: *, time: string, type: *, status: string}}
- */
-
-
-util.styleBuilder = function (type) {
-  var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
-  var customStyle = window.vividLog.config.customStyle;
-  var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
-  var style = {
-    "default": 'color: #F1F5F8;' + fontSize,
-    labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + window.vividLog.config.status[type].lightColor + ';',
-    timeDefault: '',
-    logNameDefault: 'font-weight: bold;',
-    typeNameDefault: 'background: ' + window.vividLog.config.status[type].darkColor + ';',
-    varDefault: 'margin-top: 10px; margin-bottom: 5px;' + lightTheme,
-    custom: util.makeStyleCompatible(customStyle)
-  };
-  return {
-    status: style["default"] + style.labelDefault + style.logNameDefault,
-    time: style["default"] + style.labelDefault + style.timeDefault,
-    type: style["default"] + style.labelDefault + style.typeNameDefault,
-    "var": style["default"] + style.varDefault + style.custom
-  };
-};
-/**
- * Compile default CSS rules with custom color for log
- *
  * @param color
  * @returns {{var: *, time: string, type: *, status: string}}
  */
 
 
-util.selfStyleBuilder = function (color) {
-  // Build style rules for vividLog.say() function
+util.styleBuilder = function (type, color) {
   var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
   var customStyle = window.vividLog.config.customStyle;
   var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
+  var typeOrColorLight = util.isTypeOfLoggable(type) ? window.vividLog.config.status[type].lightColor : color;
+  var typeOrColorDark = util.isTypeOfLoggable(type) ? window.vividLog.config.status[type].darkColor : color;
   var style = {
     "default": 'color: #F1F5F8;' + fontSize,
-    labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + color + ';',
+    labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + typeOrColorLight + ';',
     timeDefault: '',
     logNameDefault: 'font-weight: bold;',
-    typeNameDefault: 'background: ' + color + ';',
+    typeNameDefault: 'background: ' + typeOrColorDark + ';',
     varDefault: 'margin-top: 10px; margin-bottom: 5px;' + lightTheme,
     custom: util.makeStyleCompatible(customStyle)
   };
@@ -450,31 +434,19 @@ util.selfStyleBuilder = function (color) {
  * Compile loggable
  *
  * @param loggable
- * @param type
+ * @param typeOrLabel
  * @returns {string}
  */
 
 
-util.logBuilder = function (loggable, type) {
-  // Check if not big
+util.logBuilder = function (loggable, typeOrLabel) {
+  var label = util.isTypeOfLoggable(typeOrLabel) ? vividLog.config.status[typeOrLabel].code : typeOrLabel;
+
   if (loggable !== 'nullObjectType') {
-    return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (vividLog.config.newLine ? ' ' : '\n') + loggable;
+    return '%c' + label + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable) + (vividLog.config.newLine ? ' ' : '\n') + '%c ' + loggable;
   }
 
   return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable);
-};
-/**
- * Compile loggable with custom label
- *
- * @param loggable
- * @param label
- * @returns {string}
- */
-
-
-util.selfLogBuilder = function (loggable, label) {
-  // Build style rules for custom vividLog.say() function
-  return '%c' + label + '%c' + util.createTime(window.vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (window.vividLog.config.newLine ? ' ' : '\n') + loggable;
 };
 /**
  * Reset chained function config changes
@@ -484,9 +456,8 @@ util.selfLogBuilder = function (loggable, label) {
 
 
 util.resetConfs = function () {
-  // Todo Expand
-  window.vividLog.config.customStyle = '';
-  window.vividLog.config.autoGroup = false;
+  vividLog.config.customStyle = '';
+  vividLog.config.autoGroup = false;
   return window.vividLog.config.customStyle === '' && window.vividLog.config.autoGroup === false;
 };
 /**
@@ -516,7 +487,7 @@ util.fire = function (loggable, style) {
 
 util.fireLabel = function (label, type) {
   var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%c' + type;
-  var style = util.selfStyleBuilder('purple');
+  var style = util.styleBuilder('purple', 'purple');
   style["var"] = '';
   util.fire(compiled, style);
 };
@@ -536,7 +507,7 @@ util.loggable = function (args, type) {
   return util.evaluate(args[0], type);
 };
 /**
- * If multiple loggables are given, they will be iterated through here 
+ * If multiple loggables are given, they will be iterated through here
  *
  * @param args
  * @param type
@@ -554,11 +525,8 @@ util.iterateLoggables = function (args, type) {
     util.evaluate(args[i], 'log');
   }
 
-  if (vividLog.config.autoGroup) {
-    console.groupEnd();
-    vividLog.config.autoGroup = false;
-  }
-
+  console.groupEnd();
+  vividLog.config.autoGroup = false;
   return true;
 };
 
@@ -604,7 +572,7 @@ vividLog.config = config;
  */
 
 vividLog.takeOver = function (activate) {
-  methods.takeOver(activate || true);
+  methods.takeOver(activate || false);
 };
 /**
  * Chain before log to group the all logs
@@ -719,7 +687,7 @@ vividLog.info = function () {
 
 vividLog.say = function (loggable, label, color) {
   if (util.checkTypeLog(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
-    return util.fire(util.selfLogBuilder(loggable, label || document.title), util.selfStyleBuilder(color || 'brown'));
+    return util.fire(util.logBuilder(loggable, label || document.title), util.styleBuilder(color || 'brown', color || 'brown'));
   }
 
   if (util.checkTypeLog(loggable) === LOG_ENUM.BIG_LOGGABLE) {
@@ -731,201 +699,6 @@ vividLog.say = function (loggable, label, color) {
 };
 
 module.exports = window.vividLog = vividLog;
-
-/***/ }),
-
-/***/ "./node_modules/process/browser.js":
-/*!*****************************************!*\
-  !*** ./node_modules/process/browser.js ***!
-  \*****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
 
 /***/ })
 
