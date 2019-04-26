@@ -20,8 +20,8 @@ jobs:
       - run: 
           name: Install dependencies
           command: |
-            npm install
-            npm install nyc --save-dev
+            npm install  
+            npm install nyc mocha
       - save_cache:
           paths:
             - node_modules
