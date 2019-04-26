@@ -4,9 +4,7 @@ push.sh
 .vscode
 .babelrc
 TODO
-test/**
 codeSamples
-test
 webpack.config.js
 src
 node_modules
