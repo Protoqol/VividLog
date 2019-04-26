@@ -159,12 +159,8 @@ module.exports = {
 
 module.exports = {
   // Size type of log
-  SMALL_LOGGABLE: {
-    i: 0
-  },
-  BIG_LOGGABLE: {
-    i: 1
-  },
+  SMALL_LOGGABLE: 0,
+  BIG_LOGGABLE: 1,
   // Type of log
   DEBUG: {
     i: 2,
@@ -200,20 +196,17 @@ module.exports = {
 "use strict";
 
 
-var v = __webpack_require__(/*! ./vividLog */ "./lib/vividLog.js");
-
 module.exports = {
   // Redefine onerror | TODO Node version
   takeOver: function takeOver(activate) {
     if (activate) {
       window.onerror = function (message, source, lineno, colno, error) {
         if (error) {
-          window.vividLog.say('All your base are belong to us.', 'VividLog', '#3490DC');
+          // vividLog.say('All your base are belong to us.', 'VividLog', '#3490DC');
           event.preventDefault();
           event.stopImmediatePropagation();
           event.stopPropagation();
-          window.vividLog.err(error.stack); // Might not be available
-
+          vividLog.err(error.stack);
           return true; // Prevents any event bubbling
         }
 
@@ -229,57 +222,6 @@ module.exports = {
 
 /***/ }),
 
-/***/ "./lib/pushers.js":
-/*!************************!*\
-  !*** ./lib/pushers.js ***!
-  \************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-var util = __webpack_require__(/*! ./utils */ "./lib/utils.js");
-
-module.exports = new (
-/*#__PURE__*/
-function () {
-  function _class() {
-    _classCallCheck(this, _class);
-  }
-
-  _createClass(_class, [{
-    key: "smallLoggable",
-    value: function smallLoggable(loggable, type) {
-      util.fire(util.logBuilder(loggable, type), util.styleBuilder(type));
-    }
-  }, {
-    key: "bigLoggable",
-    value: function bigLoggable(loggable, type) {
-      var style = util.styleBuilder(type);
-      console.log(util.logBuilder('nullObjectType', type), style.status, style.time, style.type);
-      console.log(loggable);
-      console.log('%c                         ', 'padding: 0 5px;font-weight: bolder; border-top: 2px solid ' + window.vividLog.config.status[type].lightColor + ';');
-    }
-  }, {
-    key: "customSmallLoggable",
-    value: function customSmallLoggable(loggable, label, color) {
-      return util.fire(util.selfLogBuilder(loggable, label), util.selfStyleBuilder(color));
-    }
-  }, {
-    key: "customBigLoggable",
-    value: function customBigLoggable(loggable, label, color) {//TODO
-    }
-  }]);
-
-  return _class;
-}())();
-
-/***/ }),
-
 /***/ "./lib/utils.js":
 /*!**********************!*\
   !*** ./lib/utils.js ***!
@@ -292,217 +234,209 @@ function () {
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
 var LOG_ENUM = __webpack_require__(/*! ./enums */ "./lib/enums.js");
 
-module.exports = new (
-/*#__PURE__*/
-function () {
-  function _class() {
-    _classCallCheck(this, _class);
+var util = {};
+
+util.evaluate = function (loggable, type) {
+  if (util.checkTypeLog(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
+    return util.fire(util.logBuilder(loggable, type), util.styleBuilder(type));
   }
 
-  _createClass(_class, [{
-    key: "typeHint",
-    // Return type and length of loggable
-    value: function typeHint(loggable) {
-      switch (_typeof(loggable)) {
-        case 'string':
-          var len = loggable.length || 0;
-          return 'string[' + len + ']';
+  if (util.checkTypeLog(loggable) === LOG_ENUM.BIG_LOGGABLE) {
+    var style = util.styleBuilder(type);
+    console.log(util.logBuilder('nullObjectType', type), style.status, style.time, style.type);
+    console.log(loggable);
+    console.log('%c                         ', 'padding: 0 5px;font-weight: bolder; border-top: 2px solid ' + window.vividLog.config.status[type].lightColor + ';');
+  }
 
-        case 'boolean':
-          return 'boolean';
+  return false;
+};
 
-        case 'number':
-          var len = (loggable + '').length;
-          return 'integer[' + len + ']';
+util.getType = function (loggable) {
+  // Return type and length of loggable
+  var len;
 
-        case 'object':
-          var len = Object.keys(loggable).length;
-          return 'object[' + len + ']';
+  switch (_typeof(loggable)) {
+    case 'string':
+      len = loggable.length || 0;
+      return 'string[' + len + ']';
 
-        case 'bigint':
-          var len = (loggable + '').length;
-          return 'big integer[' + len + ']';
+    case 'boolean':
+      return 'boolean';
 
-        case 'function':
-          return 'function';
+    case 'number':
+      len = (loggable + '').length;
+      return 'integer[' + len + ']';
 
-        case 'symbol':
-          return 'symbol';
+    case 'object':
+      len = Object.keys(loggable).length;
+      return 'object[' + len + ']';
 
-        case 'undefined':
-          return 'undefined';
+    case 'bigint':
+      len = (loggable + '').length;
+      return 'big integer[' + len + ']';
 
-        default:
-          return false;
-      }
-    }
-  }, {
-    key: "createTime",
-    // Generate timestamp based on config
-    value: function createTime(format) {
-      var d = this.timeObj(format);
-      var str = '';
+    case 'function':
+      return 'function';
 
-      for (var i = 0; i < d.format.length; i++) {
-        switch (d.format[i]) {
-          case 'h':
-            str += d.h;
-            break;
+    case 'symbol':
+      return 'symbol';
 
-          case 'm':
-            str += d.m;
-            break;
+    case 'undefined':
+      return 'undefined';
 
-          case 's':
-            str += d.s;
-            break;
-
-          case 'ms':
-            str += d.ms;
-            break;
-
-          default:
-            break;
-        }
-
-        if (i !== d.format.length - 1) {
-          str += ':';
-        }
-      }
-
-      if (typeof str === 'string' && str.length >= 1) {
-        return str;
-      }
-
+    default:
       return false;
-    }
-  }, {
-    key: "timeObj",
-    value: function timeObj(format) {
-      var date = new Date();
-      return {
-        format: format.split(':') || window.vividLog.config.timeNotation.split(':'),
-        h: (date.getHours() < 10 ? '0' : '') + date.getHours(),
-        m: (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(),
-        s: (date.getSeconds() < 10 ? '0' : '') + date.getSeconds(),
-        ms: (date.getMilliseconds() < 10 ? '0' : '') + date.getMilliseconds()
-      };
-    }
-  }, {
-    key: "checkType",
-    // Check if big or small loggable
-    value: function checkType(loggable) {
-      if (typeof loggable === 'string' || typeof loggable === 'number' || typeof loggable === 'undefined') {
-        return LOG_ENUM.SMALL_LOGGABLE;
-      } else {
-        return LOG_ENUM.BIG_LOGGABLE;
-      }
-    }
-  }, {
-    key: "makeStyleCompatible",
-    // Check (and fix) user written css
-    value: function makeStyleCompatible(css) {
-      // Todo
-      return css;
-    }
-  }, {
-    key: "styleBuilder",
-    // Build CSS rules
-    value: function styleBuilder(type) {
-      var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
-      var customStyle = window.vividLog.config.customStyle;
-      var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
-      var style = {
-        "default": 'color: #F1F5F8;' + fontSize,
-        labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + window.vividLog.config.status[type].lightColor + ';',
-        timeDefault: '',
-        logNameDefault: 'font-weight: bold;',
-        typeNameDefault: 'background: ' + window.vividLog.config.status[type].darkColor + ';',
-        varDefault: 'margin-top: 10px; margin-bottom: 5px;' + lightTheme,
-        custom: this.makeStyleCompatible(customStyle)
-      };
-      return {
-        status: style["default"].concat([style.labelDefault, style.logNameDefault]),
-        time: style["default"].concat([style.labelDefault, style.timeDefault]),
-        type: style["default"].concat([style.labelDefault + style.typeNameDefault]),
-        "var": style["default"].concat([style.varDefault]) + style.custom
-      };
-    }
-  }, {
-    key: "selfStyleBuilder",
-    // Build style rules for vividLog.say() function
-    value: function selfStyleBuilder(color) {
-      var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
-      var customStyle = window.vividLog.config.customStyle;
-      var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
-      var style = {
-        "default": 'color: #F1F5F8;' + fontSize,
-        labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + color + ';',
-        timeDefault: '',
-        logNameDefault: 'font-weight: bold;',
-        typeNameDefault: 'background: ' + color + ';',
-        varDefault: 'margin-top: 10px; margin-bottom: 5px;' + lightTheme,
-        custom: this.makeStyleCompatible(customStyle)
-      };
-      return {
-        status: style["default"].concat([style.labelDefault, style.logNameDefault]),
-        time: style["default"].concat([style.labelDefault, style.timeDefault]),
-        type: style["default"].concat([style.labelDefault + style.typeNameDefault]),
-        "var": style["default"].concat([style.varDefault]) + style.custom
-      };
-    }
-  }, {
-    key: "logBuilder",
-    // Build log message
-    value: function logBuilder(loggable, type) {
-      // Status | Name of label 
-      // Timestamp 
-      // Type[length]
-      // [newLine?] + loggable
-      // Check if not big | Todo better check
-      if (loggable !== 'nullObjectType') {
-        return '%c' + window.vividLog.config.status[type].code + '%c' + this.createTime(window.vividLog.config.timeNotation) + '%c' + this.typeHint(loggable) + '%c' + (window.vividLog.config.newline ? ' ' : '\n') + loggable;
-      }
+  }
+};
 
-      ;
-      return '%c' + window.vividLog.config.status[type].code + '%c' + this.createTime(window.vividLog.config.timeNotation) + '%c' + this.typeHint(loggable);
-    } // Build style rules for custom vividLog.say() function
+util.createTime = function (format) {
+  // Generate timestamp based on config
+  var d = util.timeObj(format);
+  var str = '';
 
-  }, {
-    key: "selfLogBuilder",
-    value: function selfLogBuilder(loggable, label) {
-      return '%c' + label + '%c' + this.createTime(window.vividLog.config.timeNotation) + '%c' + this.typeHint(loggable) + '%c' + (window.vividLog.config.newline ? ' ' : '\n') + loggable;
-    }
-  }, {
-    key: "fire",
-    value: function fire(loggable, style) {
-      if (this.resetConfs()) {
-        console.log(loggable, style.status, style.time, style.type, style["var"]);
-        return true;
-      }
+  for (var i = 0; i < d.format.length; i++) {
+    switch (d.format[i]) {
+      case 'h':
+        str += d.h;
+        break;
 
-      return false;
-    }
-  }, {
-    key: "resetConfs",
-    value: function resetConfs(properties) {
-      // Todo Expand
-      window.vividLog.config.customStyle = '';
-      if (window.vividLog.config.customStyle === '') return true;
-      return false;
-    }
-  }]);
+      case 'm':
+        str += d.m;
+        break;
 
-  return _class;
-}())();
+      case 's':
+        str += d.s;
+        break;
+
+      case 'ms':
+        str += d.ms;
+        break;
+
+      default:
+        break;
+    }
+
+    if (i !== d.format.length - 1) {
+      str += ':';
+    }
+  }
+
+  if (typeof str === 'string' && str.length >= 1) {
+    return str;
+  }
+
+  return false;
+};
+
+util.timeObj = function (format) {
+  var date = new Date();
+  return {
+    format: format.split(':') || window.vividLog.config.timeNotation.split(':'),
+    h: (date.getHours() < 10 ? '0' : '') + date.getHours(),
+    m: (date.getMinutes() < 10 ? '0' : '') + date.getMinutes(),
+    s: (date.getSeconds() < 10 ? '0' : '') + date.getSeconds(),
+    ms: (date.getMilliseconds() < 10 ? '0' : '') + date.getMilliseconds()
+  };
+};
+
+util.checkTypeLog = function (loggable) {
+  // Check if big or small loggable
+  return typeof loggable === 'string' || typeof loggable === 'number' || typeof loggable === 'undefined' ? LOG_ENUM.SMALL_LOGGABLE : LOG_ENUM.BIG_LOGGABLE;
+};
+
+util.makeStyleCompatible = function (css) {
+  // Check (and fix) user written css | Todo
+  return css;
+};
+
+util.styleBuilder = function (type) {
+  // Build CSS rules
+  var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
+  var customStyle = window.vividLog.config.customStyle;
+  var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
+  var style = {
+    "default": 'color: #F1F5F8;' + fontSize,
+    labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + window.vividLog.config.status[type].lightColor + ';',
+    timeDefault: '',
+    logNameDefault: 'font-weight: bold;',
+    typeNameDefault: 'background: ' + window.vividLog.config.status[type].darkColor + ';',
+    varDefault: 'margin-top: 10px; margin-bottom: 5px;' + lightTheme,
+    custom: util.makeStyleCompatible(customStyle)
+  };
+  return {
+    status: style["default"] + style.labelDefault + style.logNameDefault,
+    time: style["default"] + style.labelDefault + style.timeDefault,
+    type: style["default"] + style.labelDefault + style.typeNameDefault,
+    "var": style["default"] + style.varDefault + style.custom
+  };
+};
+
+util.selfStyleBuilder = function (color) {
+  // Build style rules for vividLog.say() function
+  var lightTheme = window.vividLog.config.iUseLightTheme ? 'color: white;' : '';
+  var customStyle = window.vividLog.config.customStyle;
+  var fontSize = 'font-size: ' + window.vividLog.config.fontSize + ';';
+  var style = {
+    "default": 'color: #F1F5F8;' + fontSize,
+    labelDefault: 'border-radius: 5px; padding: 5px;' + 'background: ' + color + ';',
+    timeDefault: '',
+    logNameDefault: 'font-weight: bold;',
+    typeNameDefault: 'background: ' + color + ';',
+    varDefault: 'margin-top: 10px; margin-bottom: 5px;' + lightTheme,
+    custom: util.makeStyleCompatible(customStyle)
+  };
+  return {
+    status: style["default"].concat([style.labelDefault, style.logNameDefault]),
+    time: style["default"].concat([style.labelDefault, style.timeDefault]),
+    type: style["default"].concat([style.labelDefault + style.typeNameDefault]),
+    "var": style["default"].concat([style.varDefault]) + style.custom
+  };
+};
+
+util.logBuilder = function (loggable, type) {
+  // Build log message
+  // Status | Name of label
+  // Timestamp
+  // Type[length]
+  // [newLine?] + loggable
+  // Check if not big | Todo better check
+  if (loggable !== 'nullObjectType') {
+    return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (vividLog.config.newLine ? ' ' : '\n') + loggable;
+  }
+
+  ;
+  return '%c' + vividLog.config.status[type].code + '%c' + util.createTime(vividLog.config.timeNotation) + '%c' + util.getType(loggable);
+};
+
+util.selfLogBuilder = function (loggable, label) {
+  // Build style rules for custom vividLog.say() function
+  return '%c' + label + '%c' + util.createTime(window.vividLog.config.timeNotation) + '%c' + util.getType(loggable) + '%c' + (window.vividLog.config.newLine ? ' ' : '\n') + loggable;
+};
+
+util.resetConfs = function () {
+  // Todo Expand
+  return window.vividLog.config.customStyle === '';
+};
+
+util.fire = function (loggable, style) {
+  if (util.resetConfs()) {
+    console.log(loggable, style.status, style.time, style.type, style["var"]);
+    return true;
+  }
+
+  return false;
+};
+
+util.fireLabel = function (label) {
+  var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%cGroup';
+  var style = util.selfStyleBuilder('purple');
+  style["var"] = '';
+  util.fire(compiled, style);
+};
+
+module.exports = util;
 
 /***/ }),
 
@@ -514,216 +448,226 @@ function () {
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(global) {
+
 
 var util = __webpack_require__(/*! ./utils */ "./lib/utils.js");
-
-var push = __webpack_require__(/*! ./pushers */ "./lib/pushers.js");
 
 var config = __webpack_require__(/*! ./config/config */ "./lib/config/config.js");
 
 var methods = __webpack_require__(/*! ./methods */ "./lib/methods.js");
 
-var LOG_ENUM = Object.freeze(__webpack_require__(/*! ./enums */ "./lib/enums.js"));
-var v;
+var LOG_ENUM = Object.freeze(__webpack_require__(/*! ./enums */ "./lib/enums.js")); // Has to be immutable
 
-var takeOver = function wrapTakeOver(activate) {
-  methods.takeOver(activate);
+var vividLog = {};
+/**
+ * Holds a copy of default config
+ *
+ * @type {{timeNotation, autoGroup, iUseLightTheme, nav, newLine, customStyle, fontSize, status}|*}
+ */
+
+vividLog.config = config;
+/**
+ * Take over default error log
+ *
+ * @param activate
+ */
+
+vividLog.takeOver = function (activate) {
+  methods.takeOver(activate || true);
+};
+/**
+ * Chain before log to group the all logs
+ *
+ * @param grouped
+ * @returns {vividLog}
+ */
+
+
+vividLog.group = function (grouped) {
+  this.config.autoGroup = grouped || true;
+  return this;
+};
+/**
+ * Chain before log to give message a custom style
+ *
+ * @param customStyle
+ * @returns {vividLog}
+ */
+
+
+vividLog.style = function (customStyle) {
+  this.config.customStyle = customStyle || '';
+  return this;
+};
+/**
+ * Only log a label
+ *
+ * @param label
+ */
+
+
+vividLog.fireLabel = function (label) {
+  util.fireLabel(label);
 };
 
-module.exports = v = {
-  config: config,
-  takeOver: function takeOver(activate) {
-    methods.takeOver(activate);
-  },
-  group: function group() {
-    this.autoGroup = true;
-    return this;
-  },
-  style: function style(customStyle) {
-    this.config.customStyle = customStyle;
-    return this;
-  },
-  debug: function debug() {
-    var args = arguments;
+vividLog.debug = function () {
+  var args = arguments;
 
-    if (args.length > 1) {
-      if (this.autoGroup) {
-        logTypes.headLine('DEBUG GROUP CREATED');
-        console.groupCollapsed('Debug (group)');
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        evaluate(args[i], 'debug');
-      }
-
-      if (this.autoGroup) {
-        console.groupEnd();
-        this.autoGroup = false;
-      }
-    } else {
-      evaluate(args[0], 'debug');
+  if (args.length > 1) {
+    if (this.autoGroup) {
+      vividLog.fireLabel('DEBUG GROUP CREATED');
+      console.groupCollapsed('Debug (group)');
     }
 
-    return this;
-  },
-  err: function err() {
-    var args = arguments;
-
-    if (args.length > 1) {
-      if (this.autoGroup) {
-        logTypes.headLine('ERROR GROUP CREATED');
-        console.groupCollapsed('Error (group)');
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        evaluate(args[i], 'error');
-      }
-
-      if (this.autoGroup) {
-        console.groupEnd();
-        this.autoGroup = false;
-      }
-    } else {
-      evaluate(args[0], 'error');
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'debug');
     }
 
-    return this;
-  },
-  warn: function warn() {
-    var args = arguments;
-
-    if (args.length > 1) {
-      if (this.autoGroup) {
-        logTypes.headLine('WARNING GROUP CREATED');
-        console.groupCollapsed('Warning (group)');
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        evaluate(args[i], 'warning');
-      }
-
-      if (this.autoGroup) {
-        console.groupEnd();
-        this.autoGroup = false;
-      }
-    } else {
-      evaluate(args[0], 'error');
+    if (this.autoGroup) {
+      console.groupEnd();
+      this.autoGroup = false;
     }
-
-    return this;
-  },
-  done: function done() {
-    var args = arguments;
-
-    if (args.length > 1) {
-      if (this.autoGroup) {
-        logTypes.headLine('SUCCESS GROUP CREATED');
-        console.groupCollapsed('Success (group)');
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        evaluate(args[i], 'success');
-      }
-
-      if (this.autoGroup) {
-        console.groupEnd();
-      }
-    } else {
-      evaluate(args[0], 'success');
-    }
-
-    return this;
-  },
-  log: function log() {
-    var args = arguments;
-
-    if (args.length > 1) {
-      if (this.autoGroup) {
-        logTypes.headLine('LOGGING GROUP CREATED');
-        console.groupCollapsed('LOG (group)');
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        evaluate(args[i], 'log');
-      }
-
-      if (this.autoGroup) {
-        console.groupEnd();
-        this.autoGroup = false;
-      }
-    } else {
-      evaluate(args[0], 'log');
-    }
-
-    return this;
-  },
-  info: function info() {
-    var args = arguments;
-
-    if (args.length > 1) {
-      if (this.autoGroup) {
-        logTypes.headLine('INFO GROUP CREATED');
-        console.groupCollapsed('Info (group)');
-      }
-
-      for (var i = 0; i < args.length; i++) {
-        evaluate(args[i], 'info');
-      }
-
-      if (this.autoGroup) {
-        console.groupEnd();
-        this.autoGroup = false;
-      }
-    } else {
-      evaluate(args[0], 'info');
-    }
-
-    return this;
-  },
-  say: function say(loggable) {
-    var label = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : document.title;
-    var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'brown';
-
-    if (util.checkType(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
-      push.customSmallLoggable(loggable, label, color);
-    }
-
-    if (util.checkType(loggable) === LOG_ENUM.BIG_LOGGABLE) {
-      push.customBigLoggable(loggable, label, color);
-    }
+  } else {
+    util.evaluate(args[0], 'debug');
   }
+
+  return this;
 };
-var logTypes = {
-  headLine: function headLine(label) {
-    var compiled = '%c' + label + '%c' + util.createTime(v.config.timeNotation) + '%cGroup';
-    var style = util.selfStyleBuilder('purple');
-    style["var"] = '';
-    util.fire(compiled, style);
+
+vividLog.err = function () {
+  var args = arguments;
+
+  if (args.length > 1) {
+    if (this.autoGroup) {
+      vividLog.fireLabel('ERROR GROUP CREATED');
+      console.groupCollapsed('Error (group)');
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'error');
+    }
+
+    if (this.autoGroup) {
+      console.groupEnd();
+      this.autoGroup = false;
+    }
+  } else {
+    util.evaluate(args[0], 'error');
+  }
+
+  return this;
+};
+
+vividLog.warn = function () {
+  var args = arguments;
+
+  if (args.length > 1) {
+    if (this.autoGroup) {
+      vividLog.fireLabel('WARNING GROUP CREATED');
+      console.groupCollapsed('Warning (group)');
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'warning');
+    }
+
+    if (this.autoGroup) {
+      console.groupEnd();
+      this.autoGroup = false;
+    }
+  } else {
+    util.evaluate(args[0], 'error');
+  }
+
+  return this;
+};
+
+vividLog.done = function () {
+  var args = arguments;
+
+  if (args.length > 1) {
+    if (this.autoGroup) {
+      vividLog.fireLabel('SUCCESS GROUP CREATED');
+      console.groupCollapsed('Success (group)');
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'success');
+    }
+
+    if (this.autoGroup) {
+      console.groupEnd();
+    }
+  } else {
+    util.evaluate(args[0], 'success');
+  }
+
+  return this;
+};
+
+vividLog.log = function () {
+  var args = arguments;
+
+  if (args.length > 1) {
+    if (this.autoGroup) {
+      vividLog.fireLabel('LOGGING GROUP CREATED');
+      console.groupCollapsed('LOG (group)');
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'log');
+    }
+
+    if (this.autoGroup) {
+      console.groupEnd();
+      this.autoGroup = false;
+    }
+  } else {
+    util.evaluate(args[0], 'log');
+  }
+
+  return this;
+};
+
+vividLog.info = function () {
+  var args = arguments;
+
+  if (args.length > 1) {
+    if (this.autoGroup) {
+      vividLog.fireLabel('INFO GROUP CREATED');
+      console.groupCollapsed('Info (group)');
+    }
+
+    for (var i = 0; i < args.length; i++) {
+      util.evaluate(args[i], 'info');
+    }
+
+    if (this.autoGroup) {
+      console.groupEnd();
+      this.autoGroup = false;
+    }
+  } else {
+    util.evaluate(args[0], 'info');
+  }
+
+  return this;
+};
+
+vividLog.say = function (loggable, label, color) {
+  if (util.checkTypeLog(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
+    return util.fire(util.selfLogBuilder(loggable, label || document.title), util.selfStyleBuilder(color || 'brown'));
+  }
+
+  if (util.checkTypeLog(loggable) === LOG_ENUM.BIG_LOGGABLE) {
+    var style = util.styleBuilder(type);
+    console.log(util.logBuilder('nullObjectType', type), style.status, style.time, style.type);
+    console.log(loggable);
+    console.log('%c                         ', 'padding: 0 5px;font-weight: bolder; border-top: 2px solid ' + window.vividLog.config.status[type].lightColor + ';');
   }
 };
 
-function multipleArgs() {//
-}
-
-function evaluate(loggable, type) {
-  if (util.checkType(loggable) === LOG_ENUM.SMALL_LOGGABLE) {
-    push.smallLoggable(loggable, type);
-  }
-
-  if (util.checkType(loggable) === LOG_ENUM.BIG_LOGGABLE) {
-    push.bigLoggable(loggable, type);
-  }
-}
-
-if (v.config.nav !== 'node') {
-  window.vividLog = v;
-}
-
-if (v.config.nav !== 'browser') {
-  global.vividLog = v;
-}
-/* WEBPACK VAR INJECTION */}.call(this, __webpack_require__(/*! ./../node_modules/webpack/buildin/global.js */ "./node_modules/webpack/buildin/global.js")))
+window.vividLog = vividLog;
+module.exports = vividLog;
 
 /***/ }),
 
@@ -918,37 +862,6 @@ process.chdir = function (dir) {
     throw new Error('process.chdir is not supported');
 };
 process.umask = function() { return 0; };
-
-
-/***/ }),
-
-/***/ "./node_modules/webpack/buildin/global.js":
-/*!***********************************!*\
-  !*** (webpack)/buildin/global.js ***!
-  \***********************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || new Function("return this")();
-} catch (e) {
-	// This works if the window reference is available
-	if (typeof window === "object") g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
 
 
 /***/ })
