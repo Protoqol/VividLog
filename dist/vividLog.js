@@ -192,14 +192,12 @@ module.exports = {
   /**
    * Redefines on error event
    *
-   * @param activate
    * @returns {boolean}
+   * @param turnOn
    */
-  takeOver: function takeOver(activate) {
-    if (activate) {
+  takeOver: function takeOver(turnOn) {
+    if (turnOn) {
       window.onerror = function () {
-        console.log(arguments);
-
         if (arguments) {
           event.preventDefault();
           event.stopImmediatePropagation();
@@ -325,8 +323,8 @@ util.createTime = function (format) {
   var time = util.timeObj(format);
   var returnTime = '';
 
-  for (var i = 0; i < time.format.length; i++) {
-    switch (time.format[i]) {
+  for (var iteration = 0; iteration < time.format.length; iteration++) {
+    switch (time.format[iteration]) {
       case 'h':
         returnTime += time.h;
         break;
@@ -347,7 +345,7 @@ util.createTime = function (format) {
         break;
     }
 
-    if (i !== time.format.length - 1) {
+    if (iteration !== time.format.length - 1) {
       returnTime += ':';
     }
   }
@@ -529,6 +527,10 @@ util.iterateLoggables = function (args, type) {
   vividLog.config.autoGroup = false;
   return true;
 };
+/**
+ * Export
+ */
+
 
 module.exports = util;
 
