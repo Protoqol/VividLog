@@ -536,7 +536,7 @@ util.loggable = function (args, type) {
   return util.evaluate(args[0], type);
 };
 /**
- * If multiple loggables are given, they will be iterated through here
+ * If multiple loggables are given, they will be iterated through here 
  *
  * @param args
  * @param type
