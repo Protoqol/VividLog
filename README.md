@@ -26,7 +26,7 @@ Or add this to your html file directly <br>
 <img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
 
 ##### Configuration
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" height="650">
+<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" width="650">
 
 ## Preview - more images coming soon
 #### What you can expect
