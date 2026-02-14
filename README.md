@@ -42,7 +42,7 @@ Or add this to your HTML file directly:
 
 ```html
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@protoqol/vivid-log@latest/dist/vividLog.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@protoqol/vivid-log@latest/dist/vividLog.js"></script>
 
 <script>
     // Access via global window object
