@@ -3,27 +3,53 @@ name: Node.js CI
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'package.json'
   pull_request:
     branches: [ "main" ]
+    paths:
+      - 'package.json'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.check_version.outputs.changed }}
     strategy:
       matrix:
         node-version: [ 20.x, 22.x, 25.x ]
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Check if version changed
+        id: check_version
+        run: |
+          NEW_VERSION=$(node -p "require('./package.json').version")
+          if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]; then
+            OLD_VERSION=$(git show ${{ github.event.before }}:package.json | node -p "JSON.parse(process.argv[1]).version" -- - || echo "unknown")
+          else
+            OLD_VERSION=$(git show HEAD~1:package.json | node -p "JSON.parse(process.argv[1]).version" -- - || echo "unknown")
+          fi
+          if [ "$NEW_VERSION" != "$OLD_VERSION" ]; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
       - name: Use Node.js ${{ matrix.node-version }}
+        if: steps.check_version.outputs.changed == 'true'
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
       - run: npm ci
+        if: steps.check_version.outputs.changed == 'true'
       - run: npm test
+        if: steps.check_version.outputs.changed == 'true'
   publish:
     runs-on: ubuntu-latest
     needs: build
+    if: needs.build.outputs.changed == 'true'
     environment: publishing
     permissions:
       contents: read
