@@ -1,42 +1,42 @@
 {
-  "name": "@protoqol/vividlog",
-  "version": "2.0.1",
-  "description": "Console Logs, reimagined for JavaScript & TypeScript",
-  "main": "dist/vividLog.js",
-  "author": {
-    "name": "Protoqol",
+  "name"           : "@protoqol/vivid-log",
+  "version"        : "2.0.1",
+  "description"    : "Console Logs, reimagined for JavaScript & TypeScript",
+  "main"           : "dist/vividLog.js",
+  "author"         : {
+    "name" : "Protoqol",
     "email": "open-source@protoqol.nl",
-    "url": "https://protoqol.nl"
+    "url"  : "https://protoqol.nl"
   },
-  "repository": {
+  "repository"     : {
     "type": "git",
-    "url": "git+https://github.com/Protoqol/VividLog.git"
+    "url" : "https://github.com/Protoqol/vivid-log"
   },
-  "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.ts",
+  "scripts"        : {
+    "test" : "mocha -r ts-node/register test/**/*.ts",
     "build": "tsc && webpack --mode production",
     "watch": "tsc -w"
   },
-  "keywords": [
+  "keywords"       : [
     "logging",
     "debug",
     "javascript",
     "ecmascript",
     "protoqol"
   ],
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/Protoqol/VividLog/issues"
+  "license"        : "MIT",
+  "bugs"           : {
+    "url": "https://github.com/Protoqol/vivid-log/issues"
   },
-  "homepage": "https://github.com/Protoqol/VividLog#readme",
+  "homepage"       : "https://github.com/Protoqol/vivid-log#readme",
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.13.4",
-    "mocha": "^11.7.5",
-    "ts-loader": "^9.5.4",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.9.3",
-    "webpack": "^5.0.0",
-    "webpack-cli": "^4.0.0"
+    "@types/node" : "^22.13.4",
+    "mocha"       : "^11.7.5",
+    "ts-loader"   : "^9.5.4",
+    "ts-node"     : "^10.9.2",
+    "typescript"  : "^5.9.3",
+    "webpack"     : "^5.0.0",
+    "webpack-cli" : "^4.0.0"
   }
 }

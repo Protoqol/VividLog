@@ -1,4 +1,4 @@
-![Vivid Log](https://cms.protoqol.nl/assets/2b8d3ddd-8d7e-44e2-ba0f-09f8476258cd?v1)
+![Vivid Log](https://cms.protoqol.nl/assets/2b8d3ddd-8d7e-44e2-ba0f-09f8476258cd?v2)
 
 ![NPM](https://img.shields.io/npm/v/%40protoqol%2Fvividlog)
 ![Build status](https://img.shields.io/github/actions/workflow/status/protoqol/vivid-log/publish.yml)
@@ -33,7 +33,7 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the br
 Installation is as simple as any other npm module.
 
 ```bash
-npm i @protoqol/vividlog
+npm i @protoqol/vivid-log
 ```
 
 #### Install with CDN
@@ -42,7 +42,7 @@ Or add this to your HTML file directly:
 
 ```html
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@protoqol/vividlog@latest/dist/vividLog.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@protoqol/vivid-log@latest/dist/vividLog.js"></script>
 
 <script>
     // Access via global window object
@@ -63,7 +63,7 @@ VividLog supports both ES modules (`import`) and traditional script tags (Global
 ##### ES Modules (Modern Web / Node.js)
 
 ```typescript
-import v from '@protoqol/vividlog';
+import v from '@protoqol/vivid-log';
 
 v.log('Regular log');
 ```
@@ -111,7 +111,7 @@ v.takeOver(true);
 Configure the library by accessing the `config` property.
 
 ```typescript
-import v from "@protoqol/vividlog";
+import v from "@protoqol/vivid-log";
 
 v.config.autoGroup = false;
 v.config.fontSize = "14px";
