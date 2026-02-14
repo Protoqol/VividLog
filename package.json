@@ -1,6 +1,6 @@
 {
   "name": "@protoqol/vividlog",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Console Logs, reimagined for JavaScript & TypeScript",
   "main": "dist/vividLog.js",
   "author": {
@@ -14,8 +14,6 @@
   },
   "scripts": {
     "test": "mocha -r ts-node/register test/**/*.ts",
-    "nyc": "nyc mocha -r ts-node/register test/**/*.ts",
-    "webpack": "webpack --mode production",
     "build": "tsc && webpack --mode production",
     "watch": "tsc -w"
   },
@@ -34,10 +32,7 @@
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.13.4",
-    "jsdom": "^15.0.0",
-    "mocha": "^6.1.4",
-    "mocha-jsdom": "^2.0.0",
-    "nyc": "^14.0.0",
+    "mocha": "^11.7.5",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.3",
