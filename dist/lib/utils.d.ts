@@ -25,7 +25,7 @@ export declare class Utils {
         type: string;
         var: string;
     };
-    static logBuilder(loggable: any, typeOrLabel: string): string;
+    static logBuilder(loggable: any, typeOrLabel: string, onlyHeader?: boolean): string;
     static resetConfs(): boolean;
     static fire(loggable: string, style: any): boolean;
     static fireLabel(label: string, type?: string): void;

@@ -9,6 +9,8 @@ export class VividLog {
     constructor() {
         if (typeof window !== "undefined") {
             (window as any).vividLog = this;
+        } else if (typeof global !== "undefined") {
+            (global as any).vividLog = this;
         }
     }
 
@@ -99,7 +101,7 @@ export class VividLog {
 
         if (type === LogSize.SMALL_LOGGABLE) {
             return Utils.fire(
-                Utils.logBuilder(loggable, label || (typeof document !== "undefined" ? document.title : "vividLog")),
+                Utils.logBuilder(loggable, label || (typeof document !== "undefined" ? document.title : (typeof process !== "undefined" ? "node" : "vividLog"))),
                 Utils.styleBuilder(color || "brown", color || "brown"),
             );
         }
@@ -107,7 +109,7 @@ export class VividLog {
         if (type === LogSize.BIG_LOGGABLE) {
             const style = Utils.styleBuilder("log"); // Default to log style if big
             console.log(
-                Utils.logBuilder("nullObjectType", "log"),
+                Utils.logBuilder(loggable, "log", true),
                 style.status,
                 style.time,
                 style.type,
@@ -127,4 +129,6 @@ export default vividLogInstance;
 
 if (typeof window !== "undefined") {
     (window as any).vividLog = vividLogInstance;
+} else if (typeof global !== "undefined") {
+    (global as any).vividLog = vividLogInstance;
 }

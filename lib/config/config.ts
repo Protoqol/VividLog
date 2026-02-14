@@ -25,8 +25,8 @@ export interface VividLogConfig {
 }
 
 const config: VividLogConfig = {
-    autoGroup     : false,
-    timeNotation  : "h:m:s:ms",
+    autoGroup     : true,
+    timeNotation  : "h:m:s",
     iUseLightTheme: false,
     customStyle   : "",
     fontSize      : "12px",

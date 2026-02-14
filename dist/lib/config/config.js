@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const config = {
-    autoGroup: false,
-    timeNotation: "h:m:s:ms",
+    autoGroup: true,
+    timeNotation: "h:m:s",
     iUseLightTheme: false,
     customStyle: "",
     fontSize: "12px",

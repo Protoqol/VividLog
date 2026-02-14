@@ -1,10 +1,29 @@
-![Vivid Log](https://cms.protoqol.nl/assets/2b8d3ddd-8d7e-44e2-ba0f-09f8476258cd)
+![Vivid Log](https://cms.protoqol.nl/assets/2b8d3ddd-8d7e-44e2-ba0f-09f8476258cd?v1)
 
 [![npm version](https://badge.fury.io/js/vividlog.svg)](https://badge.fury.io/js/vividlog) ![npm](https://img.shields.io/npm/dm/vividlog.svg)
 
 > Ever thought the native console logging feature could be better?
 
-This npm module makes it slightly easier but mainly a lot nicer to log to the browser console.
+This npm module makes it slightly easier but mainly a lot nicer to log to the browser console and terminal.
+
+## Features
+
+- **TypeScript Native**: Written in TypeScript with full type definitions.
+- **Cross-Environment**: Automatic detection and support for both Browser and Node.js.
+- **Beautiful Styles**: CSS-styled logs in browsers and ANSI-styled logs in terminals.
+- **Grouping**: Auto-grouping of multiple logs for better organization.
+- **Customizable**: Flexible configuration for colors, timestamps, and font sizes.
+- **Takeover**: Ability to catch global errors and log them vividly.
+
+## Table of Contents
+
+- [Installation](#installation--usage)
+- [Usage](#usage)
+    - [Available Methods](#available-methods)
+- [Configuration](#configuration)
+- [Environment Support](#environment-support)
+- [Preview](#preview)
+- [Release History](#release-history)
 
 ## Installation & Usage
 
@@ -13,82 +32,112 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the br
 Installation is as simple as any other npm module.
 
 ```bash
-npm i vividlog --save-dev
+npm i @protoqol/vividlog
 ```
 
 #### Install with CDN
 
-Or add this to your HTML file directly
+Or add this to your HTML file directly:
 
 ```html
 
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@latest/dist/vividLog.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@protoqol/vividlog@latest/dist/vividLog.js"></script>
+
+<script>
+    // Access via global window object
+    const v = window.vividLog;
+    v.done("VividLog is ready!");
+</script>
 ```
 
 ### Usage
 
-> ##### Available methods
->  Note that VividLog is bound to `window.vividLog`
+#### Available Methods
+
+VividLog supports both ES modules (`import`) and traditional script tags (Global variable).
+
+- **In Browsers**: It is automatically bound to `window.vividLog`.
+- **In Node.js**: It is automatically bound to `global.vividLog`.
+
+##### ES Modules (Modern Web / Node.js)
+
+```typescript
+import v from '@protoqol/vividlog';
+
+v.log('Regular log');
+```
+
+##### Global Variable (CDN / Traditional Script)
+
+If you are using the CDN version, you don't need to import anything. Use `vividLog` directly:
 
 ```javascript
-let v = require('vividLog') || window.vividLog
+vividLog.info('Information message via global variable');
+```
 
-// How to use
-v.log(...any)
+##### Grouping & Multiple Arguments
 
-// When JavaScript has done a good job
-v.done('A', 'Success!')
+Log multiple variables together or group them under a single label.
 
-// Purely for logging information
-v.info('Hey, we reached this point!');
+```typescript
+// Log multiple items (they will be auto-grouped)
+v.log('User Data:', {id: 1, name: 'John'}, ['Admin', 'Developer']);
 
-// For debug-related logging
-v.debug(['Hm', 'This', 'Is', 'Annoying'])
+// Manually group the next log call
+v.group().log('Category A', 'Category B', 'Category C');
+```
 
-// Logging errors
-v.err('This should definitely not happen')
+##### Custom Styling & Utilities
 
-// For quick and dirty logging
-v.log('Nice weather today')
-// Group all given variables, can be used with any method above
+Methods for custom branding and behavior.
 
-v.group().log('Group', 'These', 'Together')
+```typescript
+// Custom log with label and hex color
+v.say('My Variable', 'A Nice Label', '#795548');
 
-// Custom log utility
-v.say(
-    'My Variable',
-    'A Nice Label',
-    'MyColor, defaults to brown but can be any css valid color'
-)
+// Just fire a label without content
+v.fireLabel('PROCESS STARTED');
 
-// Inject your own style!
-v.style('font-style: italic;').log('Pretty text!')
+// Inject custom CSS (Browser only)
+v.style('font-style: italic; font-weight: bold;').log('Stylish text!');
 
-// Replace default error log with VividLog I Experimental feature
+// Catch all global uncaught exceptions/errors
 v.takeOver(true);
-
 ```
 
 ### Configuration
 
+Configure the library by accessing the `config` property.
+
 ```typescript
-let v = require("vividLog") || window.vividLog;
+import v from "@protoqol/vividlog";
 
-// Configure like
 v.config.autoGroup = false;
-
-// Available config
-type configType = {
-    config: {
-        autoGroup: boolean,
-        timeNotation: "h:m:s:ms",
-        iUseLightTheme: boolean,
-        fontSize: "{PIXEL_VALUE}px",
-        newLine: boolean
-    }
-}
-
+v.config.fontSize = "14px";
 ```
+
+#### Available Config Options
+
+| Property         | Type      | Default   | Description                                                               |
+|:-----------------|:----------|:----------|:--------------------------------------------------------------------------|
+| `autoGroup`      | `boolean` | `true`    | Automatically group multiple arguments into a collapsed console group.    |
+| `timeNotation`   | `string`  | `"h:m:s"` | Format for the timestamp.                                                 |
+| `iUseLightTheme` | `boolean` | `false`   | Adjusts text colors for better visibility on light console themes.        |
+| `customStyle`    | `string`  | `""`      | Global CSS style applied to all logs (Browser only).                      |
+| `fontSize`       | `string`  | `"12px"`  | Font size for console logs (Browser only).                                |
+| `newLine`        | `boolean` | `false`   | Whether to put the log content on a new line (default `true` on Firefox). |
+| `status`         | `object`  | ...       | Mapping of log levels to their respective colors and codes.               |
+
+## Environment Support
+
+#### Browser
+
+Fully supported with CSS-styled logging in Chrome, Firefox, and Opera.
+
+#### Node.js / Terminal
+
+Fully supported with ANSI color-styled logging. VividLog automatically detects the environment and applies the
+appropriate styling.
 
 ## Preview
 
@@ -108,8 +157,15 @@ type configType = {
 
 ![Vivid Log](https://cms.protoqol.nl/assets/aba963fa-13b5-4cea-ab4f-dc0ad166f2f9)
 
-## Release History (v1.5.0)
+## Release History
 
+* 2.0.0
+    * Converted the entire library to **TypeScript**.
+    * Added full **Node.js / Terminal** support with ANSI colors.
+    * Modernized code to ES2026 standards.
+    * Improved type detection for variables (e.g., `object[3]`, `array[5]`, `error`).
+    * Fixed `v.takeOver()` for Node.js (`uncaughtException`).
+    * Updated build system to use Webpack 5 and TypeScript.
 * 1.5.0
     * Added new method called `v.style()` in which you can define your own log style
     * A lot of refactoring of the code, less chaos more nice code

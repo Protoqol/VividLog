@@ -1,0 +1,25 @@
+export declare const ANSI: {
+    reset: string;
+    bold: string;
+    italic: string;
+    underline: string;
+    inverse: string;
+    black: string;
+    red: string;
+    green: string;
+    yellow: string;
+    blue: string;
+    magenta: string;
+    cyan: string;
+    white: string;
+    bgBlack: string;
+    bgRed: string;
+    bgGreen: string;
+    bgYellow: string;
+    bgBlue: string;
+    bgMagenta: string;
+    bgCyan: string;
+    bgWhite: string;
+};
+export declare const hexToAnsi: (hex: string) => string;
+export declare const hexToAnsiBg: (hex: string) => string;

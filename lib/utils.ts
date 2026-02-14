@@ -1,8 +1,7 @@
 import {LogSize} from "./enums";
 import config from "./config/config";
+import {ANSI, hexToAnsi, hexToAnsiBg} from "./ansi";
 
-// Define a type for the global vividLog if needed, or use a class.
-// Based on the code, vividLog is expected to be global.
 declare global {
     interface Window {
         vividLog: any;
@@ -10,6 +9,8 @@ declare global {
 
     const vividLog: any;
 }
+
+const isBrowser = typeof window !== "undefined" && typeof window.document !== "undefined";
 
 export class Utils {
     static evaluate(loggable: any, type: string): boolean {
@@ -19,23 +20,37 @@ export class Utils {
 
         if (this.checkTypeLog(loggable) === LogSize.BIG_LOGGABLE) {
             const style = this.styleBuilder(type);
-            console.log(
-                this.logBuilder("nullObjectType", type),
-                style.status,
-                style.time,
-                style.type,
-            );
-            console.log(loggable);
-            console.log(
-                "%c                         ",
-                "padding: 0 5px;font-weight: bolder; border-top: 2px solid " + (window.vividLog?.config?.status[type]?.lightColor || "#000") + ";",
-            );
+
+            if (isBrowser) {
+                console.log(
+                    this.logBuilder(loggable, type, true),
+                    style.status,
+                    style.time,
+                    style.type,
+                );
+                console.log(loggable);
+                console.log(
+                    "%c                         ",
+                    "padding: 0 5px;font-weight: bolder; border-top: 2px solid " + (window.vividLog?.config?.status[type]?.lightColor || "#000") + ";",
+                );
+            } else {
+                console.log(this.logBuilder(loggable, type, true));
+                console.log(loggable);
+                const color = (global as any).vividLog?.config?.status[type]?.lightColor || config.status[type]?.lightColor || "#000";
+                console.log(hexToAnsi(color) + "-------------------------" + ANSI.reset);
+            }
         }
+
         return false;
     }
 
     static getType(loggable: any): string | false {
         let len: number;
+
+        if (loggable instanceof Error) {
+            return "error";
+        }
+
         switch (typeof loggable) {
             case "string":
                 len = loggable.length || 0;
@@ -48,6 +63,10 @@ export class Utils {
             case "object":
                 if (loggable === null) {
                     return "null";
+                }
+                if (Array.isArray(loggable)) {
+                    len = loggable.length;
+                    return `array[${len}]`;
                 }
                 len = Object.keys(loggable).length;
                 return `object[${len}]`;
@@ -99,7 +118,8 @@ export class Utils {
 
     static timeObj(format: string) {
         const date = new Date();
-        const cfg = window.vividLog?.config || config;
+        const cfg = (isBrowser ? window.vividLog?.config : (global as any).vividLog?.config) || config;
+
         return {
             format: format.split(":") || cfg.timeNotation.split(":"),
             h     : String(date.getHours()).padStart(2, "0"),
@@ -120,7 +140,7 @@ export class Utils {
     }
 
     static styleBuilder(type: string, color?: string) {
-        const cfg = window.vividLog?.config || config;
+        const cfg = (isBrowser ? window.vividLog?.config : (global as any).vividLog?.config) || config;
         const lightTheme = cfg.iUseLightTheme ? "color: white;" : "";
         const customStyle = cfg.customStyle;
         const fontSize = `font-size: ${cfg.fontSize};`;
@@ -146,26 +166,43 @@ export class Utils {
         };
     }
 
-    static logBuilder(loggable: any, typeOrLabel: string): string {
-        const cfg = window.vividLog?.config || config;
+    static logBuilder(loggable: any, typeOrLabel: string, onlyHeader: boolean = false): string {
+        const cfg = (isBrowser ? window.vividLog?.config : (global as any).vividLog?.config) || config;
         const label = this.isTypeOfLoggable(typeOrLabel) ? cfg.status[typeOrLabel].code : typeOrLabel;
 
-        if (loggable !== "nullObjectType") {
+        if (!isBrowser) {
+            const time = this.createTime(cfg.timeNotation);
+            const type = this.getType(loggable);
+            const statusColor = this.isTypeOfLoggable(typeOrLabel) ? cfg.status[typeOrLabel].lightColor : (typeOrLabel === "LABEL" ? "#800080" : "#A52A2A");
+            const typeColor = this.isTypeOfLoggable(typeOrLabel) ? cfg.status[typeOrLabel].darkColor : (typeOrLabel === "LABEL" ? "#800080" : "#A52A2A");
+
+            const labelStyled = hexToAnsiBg(statusColor) + ANSI.white + ANSI.bold + ` ${label} ` + ANSI.reset;
+            const timeStyled = hexToAnsiBg("#444") + ANSI.white + ` ${time} ` + ANSI.reset;
+            const typeStyled = hexToAnsiBg(typeColor) + ANSI.white + ` ${type} ` + ANSI.reset;
+
+            if (!onlyHeader) {
+                return `${labelStyled}${timeStyled}${typeStyled}${cfg.newLine ? " " : "\n"} ${loggable}`;
+            }
+
+            return `${labelStyled}${timeStyled}${typeStyled}`;
+        }
+
+        if (!onlyHeader) {
             return "%c" + label +
                 "%c" + this.createTime(cfg.timeNotation) +
                 "%c" + this.getType(loggable) + (cfg.newLine ? " " : "\n") +
                 "%c " + loggable;
         }
 
-        // type is not defined in original code here, but it seems it should be typeOrLabel
         const typeCode = cfg.status[typeOrLabel]?.code || typeOrLabel;
+
         return "%c" + typeCode +
             "%c" + this.createTime(cfg.timeNotation) +
             "%c" + this.getType(loggable);
     }
 
     static resetConfs(): boolean {
-        const cfg = window.vividLog?.config || config;
+        const cfg = (isBrowser ? window.vividLog?.config : (global as any).vividLog?.config) || config;
         cfg.customStyle = "";
         cfg.autoGroup = false;
         return cfg.customStyle === "" && cfg.autoGroup === false;
@@ -173,32 +210,48 @@ export class Utils {
 
     static fire(loggable: string, style: any): boolean {
         if (this.resetConfs()) {
-            console.log(loggable, style.status, style.time, style.type, style.var);
+            if (isBrowser) {
+                console.log(loggable, style.status, style.time, style.type, style.var);
+            } else {
+                console.log(loggable);
+            }
+
             return true;
         }
+
         return false;
     }
 
     static fireLabel(label: string, type: string = "LABEL"): void {
-        const cfg = window.vividLog?.config || config;
-        const compiled = `%c${label}%c${this.createTime(cfg.timeNotation)}%c${type}`;
-        const style = this.styleBuilder("purple", "purple");
-        style.var = "";
-        this.fire(compiled, style);
+        const cfg = (isBrowser ? window.vividLog?.config : (global as any).vividLog?.config) || config;
+
+        if (isBrowser) {
+            const compiled = `%c${label}%c${this.createTime(cfg.timeNotation)}%c${type}`;
+            const style = this.styleBuilder("purple", "purple");
+            style.var = "";
+            this.fire(compiled, style);
+        } else {
+            const compiled = this.logBuilder(null, label, true);
+            this.fire(compiled, {});
+        }
     }
 
     static loggable(args: IArguments | any[], type: string): boolean {
         if (args.length > 1) {
             return this.iterateLoggables(args, type);
         }
+
         return this.evaluate(args[0], type);
     }
 
     static iterateLoggables(args: IArguments | any[], type: string): boolean {
-        const cfg = window.vividLog?.config || config;
+        const cfg = (isBrowser ? window.vividLog?.config : (global as any).vividLog?.config) || config;
+
         if (cfg.autoGroup) {
             this.fireLabel(type.toUpperCase(), `Group[${args.length}]`);
-            console.groupCollapsed(type.toUpperCase());
+            if (isBrowser && console.groupCollapsed) {
+                console.groupCollapsed(type.toUpperCase());
+            }
         }
 
         for (let i = 0; i < args.length; i++) {
@@ -206,8 +259,11 @@ export class Utils {
         }
 
         if (cfg.autoGroup) {
-            console.groupEnd();
+            if (isBrowser && console.groupEnd) {
+                console.groupEnd();
+            }
         }
+
         cfg.autoGroup = false;
 
         return true;
