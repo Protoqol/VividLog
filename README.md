@@ -1,6 +1,7 @@
 ![Vivid Log](https://cms.protoqol.nl/assets/2b8d3ddd-8d7e-44e2-ba0f-09f8476258cd?v1)
 
-[![npm version](https://badge.fury.io/js/vividlog.svg)](https://badge.fury.io/js/vividlog) ![npm](https://img.shields.io/npm/dm/vividlog.svg)
+![NPM](https://img.shields.io/npm/v/%40protoqol%2Fvividlog)
+![Build status](https://img.shields.io/github/actions/workflow/status/protoqol/vivid-log/publish.yml)
 
 > Ever thought the native console logging feature could be better?
 
