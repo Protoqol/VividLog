@@ -10,7 +10,7 @@ This npm module makes it slightly easier but mainly a lot nicer to log to the br
 
 #### Install with npm
 
-Installation is as simple as any other npm module.<br>
+Installation is as simple as any other npm module.
 
 ```bash
 npm i vividlog --save-dev
@@ -18,42 +18,95 @@ npm i vividlog --save-dev
 
 #### Install with CDN
 
-Or add this to your HTML file directly <br>
+Or add this to your HTML file directly
 
 ```html
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vividlog@latest/dist/vividLog.js"></script>
 ```
 
-> #### Usage
->##### Available methods
->  Note that VividLog is bound to `window.vividLog`<br>
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/functions.png" width="650">
+### Usage
 
-> ##### Configuration
-<img src="https://gitlab.com/QuintenJustus/vividlog/raw/master/assets/config.png" width="650">
+> ##### Available methods
+>  Note that VividLog is bound to `window.vividLog`
 
-## Preview - more images coming soon
+```javascript
+let v = require('vividLog') || window.vividLog
+
+// How to use
+v.log(...any)
+
+// When JavaScript has done a good job
+v.done('A', 'Success!')
+
+// Purely for logging information
+v.info('Hey, we reached this point!');
+
+// For debug-related logging
+v.debug(['Hm', 'This', 'Is', 'Annoying'])
+
+// Logging errors
+v.err('This should definitely not happen')
+
+// For quick and dirty logging
+v.log('Nice weather today')
+// Group all given variables, can be used with any method above
+
+v.group().log('Group', 'These', 'Together')
+
+// Custom log utility
+v.say(
+    'My Variable',
+    'A Nice Label',
+    'MyColor, defaults to brown but can be any css valid color'
+)
+
+// Inject your own style!
+v.style('font-style: italic;').log('Pretty text!')
+
+// Replace default error log with VividLog I Experimental feature
+v.takeOver(true);
+
+```
+
+### Configuration
+
+```typescript
+let v = require("vividLog") || window.vividLog;
+
+// Configure like
+v.config.autoGroup = false;
+
+// Available config
+type configType = {
+    config: {
+        autoGroup: boolean,
+        timeNotation: "h:m:s:ms",
+        iUseLightTheme: boolean,
+        fontSize: "{PIXEL_VALUE}px",
+        newLine: boolean
+    }
+}
+
+```
+
+## Preview
 
 #### What you can expect
 
-<img src="https://cms.protoqol.nl/assets/c3dae929-c937-486d-b88e-5c0ad4c2748c"
-alt="Vivid Log" height="500" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
+![Vivid Log](https://cms.protoqol.nl/assets/c3dae929-c937-486d-b88e-5c0ad4c2748c)
 
 #### Without grouping and with grouping
 
-<img src="https://cms.protoqol.nl/assets/a83344eb-f4c9-44b0-8bbc-eca2e6f3652c"
-alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
+![Vivid Log](https://cms.protoqol.nl/assets/a83344eb-f4c9-44b0-8bbc-eca2e6f3652c)
 
 #### Expanded group
 
-<img src="https://cms.protoqol.nl/assets/dfc723de-c038-4024-9710-088d75cddfc1"
-alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
+![Vivid Log](https://cms.protoqol.nl/assets/dfc723de-c038-4024-9710-088d75cddfc1)
 
 #### What your error log looks like after using `v.takeover()`
 
-<img src="https://cms.protoqol.nl/assets/aba963fa-13b5-4cea-ab4f-dc0ad166f2f9"
-alt="Vivid Log" style="border-radius:5px; box-shadow: 1px 3px 5px black"/>
+![Vivid Log](https://cms.protoqol.nl/assets/aba963fa-13b5-4cea-ab4f-dc0ad166f2f9)
 
 ## Release History (v1.5.0)
 
